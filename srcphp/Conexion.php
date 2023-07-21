@@ -1,6 +1,7 @@
 <?php
 
     namespace proyecto;
+    use PDOException;
 
     use PDO;
 

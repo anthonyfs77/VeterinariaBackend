@@ -1,8 +1,10 @@
 <?php
+
 namespace proyecto\Controller;
-use proyecto\models\clientes;
+use proyecto\Models\Clientes;
 use proyecto\Response\Failure;
 use proyecto\Response\Success;
+use proyecto\models\Table;
 
 
 class RegistroController{
@@ -10,23 +12,28 @@ class RegistroController{
         try{
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
-
             $reg = new clientes();
             $reg->nombre = $dataObject->nombre;
-            $reg->last = $dataObject->last;
-            $reg->contrasena = $dataObject->contrasena;
+            $reg->apellido = $dataObject->last;
             $reg->correo = $dataObject->correo;
-            $reg->tel1  = $dataObject->tel1;
-            $reg->tel2 = $dataObject->tel2;
-
+            $reg->telefono1 = $dataObject->tel1;
+            $reg->telefono2  = $dataObject->tel2;
+            $reg->contrasena = $dataObject->contrasena;
+            
             $reg->save();
             $r = new Success($reg);
-
-            return $r->Send();
+            
+            return $r->send();
 
         }catch (\Exception $e){
-            $r = new Failure(401,$e->getMessage());
+            $r = new Failure(401,$e->getMessage("No se realizo el registro"));
             return $r->Send();
         }
+    }
+
+    function mostrarR(){
+        $t=Table::query("select * from clientes");
+        $r= new Success($t);
+        return $r->Send();
     }
 }

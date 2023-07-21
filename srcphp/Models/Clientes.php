@@ -1,18 +1,21 @@
 <?php
 namespace proyecto\Models;
+use proyecto\Auth;
+use PDO;
 
 class Clientes extends Models{
 
     public $nombre = "";
-    public $last = "";
-    public $contrasena = "";
+    public $apellido = "";
     public $correo = "";
-    public $tel1 = "";
-    public $tel2 = "";
+    public $telefono1 = "";
+    public $telefono2 = "";
+    public $contrasena = "";
 
     protected $filleable = [
-        "nombre","last","contrasena","correo","tel1","tel2"
+        "nombre","apellido","correo","telefono1","telefono2","contrasena"
     ];
 
     protected $table = "clientes";
+
 }
