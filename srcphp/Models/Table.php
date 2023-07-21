@@ -14,16 +14,27 @@ class Table
 
     }
     static  function getDataconexion(){
+    }
 
 
-
-
-}
     static function query($query)
     {
-        $cc = new  Conexion("veterinaria", "localhost", "root", "10 enero");
+        $cc = new  Conexion("", "", "", "");
         self::$pdo = $cc->getPDO();
         $stmt = self::$pdo->query($query);
+        $resultados = $stmt->fetchAll(PDO::FETCH_OBJ);
+        return $resultados;
+    }
+
+    static function queryParams($query, $params = [])
+    {
+        $cc = new Conexion("", "", "", "");
+        self::$pdo = $cc->getPDO();
+
+        $stmt = self::$pdo->prepare($query);
+
+        $stmt->execute($params);
+
         $resultados = $stmt->fetchAll(PDO::FETCH_OBJ);
         return $resultados;
     }

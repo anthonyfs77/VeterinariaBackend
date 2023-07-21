@@ -1,8 +1,5 @@
 <?php
-
     namespace proyecto\Models;
-
-
     use PDO;
     use proyecto\Conexion;
     use proyecto\Exception;
@@ -20,7 +17,7 @@
 
         public function __construct()
         {
-            $cc = new  Conexion("veterinaria", "localhost", "root", "10 enero");
+            $cc = new  Conexion("", "", "", "");
             self::$pdo = $cc->getPDO();
         }
         public function create(array $obj)
@@ -132,9 +129,5 @@
 
             return  $resultados;
         }
-
-
-
-
 
     }
