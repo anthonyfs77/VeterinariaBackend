@@ -4,13 +4,13 @@ require("../vendor/autoload.php");
 
 use proyecto\Controller\LoginController;
 use proyecto\Controller\RegistroController;
+use proyecto\Controller\MostrarProductosController;
 use proyecto\Response\Success;
 
 Router::headers();
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 
 // Ruta de registro de clientes [Pantalla Registro]
@@ -21,6 +21,16 @@ Router::get('/mostrarR', [RegistroController::class, 'mostrarR']);
 
 // Verificiacion de usuario en login BD -> login
 Router::post('/verificacion', [LoginController::class, 'verificar']);
+
+
+// Mandar Productos
+Router::get('/productos', [MostrarProductosController::class, 'mostrarP']);
+
+// Mandar Productos internos
+Router::get('/productosInternos', [MostrarProductosController::class, 'mostrarProductsInter']);
+
+// Mandar Rango de precios 
+Router::post('/precios', [MostrarProductosController::class, 'rangoPrecios']);
 
 
 // funcion de prueba 
