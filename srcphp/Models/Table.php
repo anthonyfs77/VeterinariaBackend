@@ -19,7 +19,7 @@ class Table
 
     static function query($query)
     {
-        $cc = new  Conexion("", "", "", "");
+        $cc = new  Conexion("veterinaria", "localhost", "root", "");
         self::$pdo = $cc->getPDO();
         $stmt = self::$pdo->query($query);
         $resultados = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -28,7 +28,7 @@ class Table
 
     static function queryParams($query, $params = [])
     {
-        $cc = new Conexion("", "", "", "");
+        $cc = new Conexion("veterinaria", "localhost", "root", "");
         self::$pdo = $cc->getPDO();
 
         $stmt = self::$pdo->prepare($query);

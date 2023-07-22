@@ -6,3 +6,6 @@
 .conf/
 .gitconfig
 .ssh/
+models/models.php
+models/table.php
+
