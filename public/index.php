@@ -6,6 +6,7 @@ use proyecto\Controller\LoginController;
 use proyecto\Controller\RegistroController;
 use proyecto\Controller\MostrarProductosController;
 use proyecto\Response\Success;
+use proyecto\Controller\EmpleadosController;
 
 Router::headers();
 
@@ -15,6 +16,8 @@ ini_set('display_startup_errors', 1);
 
 // Ruta de registro de clientes [Pantalla Registro]
 Router::post('/registro', [RegistroController::class, 'registrar']);
+
+Router::post('/registro', [EmpleadosController::class, 'registrar']);
 
 // Consulta para mostrar todos los registros
 Router::get('/mostrarR', [RegistroController::class, 'mostrarR']);
@@ -45,31 +48,6 @@ Router::get("/pru", function(){
 
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
