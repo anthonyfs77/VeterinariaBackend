@@ -6,5 +6,11 @@
 .conf/
 .gitconfig
 .ssh/
+<<<<<<< HEAD
 Table.php
 Models.php
+=======
+models/models.php
+models/table.php
+
+>>>>>>> 67d152aeba9d0911f5a88e137bb21088d40afaf4

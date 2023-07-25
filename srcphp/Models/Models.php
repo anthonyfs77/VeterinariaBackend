@@ -2,9 +2,9 @@
     namespace proyecto\Models;
     use PDO;
     use proyecto\Conexion;
-    use proyecto\Exception;
     use function json_encode;
-
+    use Exception;
+    
     class Models
     {
         /**
@@ -13,13 +13,14 @@
         protected $filleable = [];
         public static $pdo = null;
         protected $table = "";
-        protected  $id="";
+        protected $id="";
 
         public function __construct()
         {
             $cc = new  Conexion("veterinaria", "127.0.0.1", "root", "10 enero");
             self::$pdo = $cc->getPDO();
         }
+
         public function create(array $obj)
         {
             $campos = "(";
