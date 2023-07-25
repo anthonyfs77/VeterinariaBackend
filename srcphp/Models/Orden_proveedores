@@ -1,6 +1,7 @@
 <?php
 namespace proyecto\Models;
 use proyecto\Auth;
+use proyecto\Models\Models;
 use PDO;
 
 class Orden_proveedores extends Models{

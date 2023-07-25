@@ -1,6 +1,7 @@
 <?php
 
 namespace proyecto\Models;
+use proyecto\Models\Models;
 use proyecto\Auth;
 use PDO;
 
