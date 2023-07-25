@@ -29,8 +29,16 @@ Router::get('/productos', [MostrarProductosController::class, 'mostrarP']);
 // Mandar Productos internos
 Router::get('/productosInternos', [MostrarProductosController::class, 'mostrarProductsInter']);
 
-// Mandar Rango de precios 
+// Mandar Rango de precios de productos Internos
 Router::post('/precios', [MostrarProductosController::class, 'rangoPrecios']);
+
+// Mandar Productos Publicos
+Router::get('/productosPublicos', [MostrarProductosController::class, 'mostrarProductsPublic']);
+
+// Mandar Rango de precios de productos Publicos
+Router::post('/preciosPublicos', [MostrarProductosController::class,'rangoPreciosPublics']);
+
+
 
 
 // funcion de prueba 
