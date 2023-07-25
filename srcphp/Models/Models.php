@@ -17,7 +17,7 @@
 
         public function __construct()
         {
-            $cc = new  Conexion("", "", "", "");
+            $cc = new  Conexion("veterinaria", "127.0.0.1", "root", "10 enero");
             self::$pdo = $cc->getPDO();
         }
         public function create(array $obj)
