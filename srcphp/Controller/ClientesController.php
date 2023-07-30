@@ -4,8 +4,6 @@ namespace proyecto\Controller;
 use proyecto\Models\Clientes;
 use proyecto\Response\Failure;
 use proyecto\Response\Success;
-use proyecto\models\Table;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ClientesController{
 
