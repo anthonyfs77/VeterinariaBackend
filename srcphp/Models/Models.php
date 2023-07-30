@@ -13,13 +13,14 @@
         protected $filleable = [];
         public static $pdo = null;
         protected $table = "";
-        protected  $id="";
+        protected $id="";
 
         public function __construct()
         {
             $cc = new  Conexion("veterinaria", "localhost", "root", "");
             self::$pdo = $cc->getPDO();
         }
+
         public function create(array $obj)
         {
             $campos = "(";
