@@ -100,9 +100,9 @@
             $this->password = $password;
         }
         public function getPDO(): PDO
-{
+    {
     try {
-        $dsn = "mysql:host=localhost;port=3308;dbname=$this->dbname";
+        $dsn = "mysql:host=localhost;port=3307;dbname=$this->dbname";
         if (self::$DB == null) {
             self::$DB = new PDO($dsn, $this->user, $this->password);
         }
