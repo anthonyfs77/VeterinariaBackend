@@ -11,7 +11,10 @@ use proyecto\Controller\VentasController;
 use proyecto\Controller\Ordenes_comprasController;
 use proyecto\Controller\citasController;
 use proyecto\Controller\ProductoController;
-
+use proyecto\Controller\GenerarConsultasController;
+use proyecto\Controller\MascotasController;
+use proyecto\Controller\ProveedorController;
+use proyecto\Controller\ReportesController;
 
 Router::headers();
 
@@ -25,8 +28,28 @@ Router::get("/pru", function(){
 
 
 
+Router::post('/historialMedico', [ReportesController::class, 'historialMedico']);
+Router::post('/historialMedicoCliente',[ReportesController::class, 'historialMedicoCliente']);
 
+Router::post('/ReporteConsultasGeneral',[ReportesController::class, 'ReporteConsultasGeneral']);
+Router::post('/ReporteConsultasFecha',[ReportesController::class, 'ReporteConsultasFecha']);
+Router::post('/ReporteConsultasCliente',[ReportesController::class, 'ReporteConsultasCliente']);
 
+Router::post('/ReporteGralCitasRechazadas',[ReportesController::class, 'ReporteGralCitasRechazadas']);
+Router::post('/ReporteCitasRechazadasCliente',[ReportesController::class, 'ReporteCitasRechazadasCliente']);
+Router::post('/ReporteCitasRechazadasFecha',[ReportesController::class, 'ReporteCitasRechazadasFecha']);
+
+Router::post('/ReporteGeneralOrdenesCompra',[ReportesController::class, 'ReporteGeneralOrdenesCompra']);
+Router::post('/ReporteGeneralOrdenesCompraPagadas',[ReportesController::class, 'ReporteGeneralOrdenesCompraPagadas']);
+
+Router::post('/ReporteGralVentas',[ReportesController::class, 'ReporteGralVentas']);
+Router::post('/ReporteFechaVentas',[ReportesController::class, 'ReporteFechaVentas']);
+
+Router::post('/registrarProveedor',[ProveedorController::class, 'registrarProveedor']);
+Router::post('/TablaProveedor',[ProveedorController::class, 'TablaProveedor']);
+
+Router::post('/especie', [MascotasController::class, 'especie']);
+Router::post('/registrarMascota', [MascotasController::class, 'registrarMascota']);
 
 // Ruta de registro de clientes [Pantalla Registro]
 Router::post('/registro', [RegistroController::class, 'registrar']);
@@ -71,6 +94,10 @@ Router::get('/ventasRecientes', [VentasController::class, 'mostrarVentasReciente
 
 // Citas pendientes
 Router::get('/citasPendientes', [citasController::class, 'mostrarCitasPendientes']);
+Router::post('/agendarcita', [citasController::class, 'agendarcita']);
+Router::post('/MascotasUsuario', [citasController::class, 'MascotasUsuario']);
+Router::post('/servicio', [citasController::class, 'servicio']);
+Router::post('/tiposservicios', [citasController::class, 'tiposservicios']);
 
 // AGREGAR PRODUCTO 
 Router::post('/agregarProducto', [ProductoController::class, 'AgregarProductoPublico']);
@@ -90,6 +117,11 @@ Router::post('/alterProdInterno', [ProductoController::class, 'modificarProducto
 // MODIFICAR PRODUCTO EXISTENTE
 Router::post('/alterProdInternoExistente', [ProductoController::class, 'modificarDataProductoInterno']);
 
+Router::post('/GenerarConsultas',[GenerarConsultasController::class, 'GenerarConsultas']);
+Router::post('/GenerarConsultasCliente',[GenerarConsultasController::class, 'GenerarConsultasCliente']);
+Router::post('/GenerarConsultasFecha',[GenerarConsultasController::class, 'GenerarConsultasFecha']);
+Router::post('/BuscarMedicamentos',[GenerarConsultasController::class, 'BuscarMedicamentos']);
+Router::post('/RegistroConsulta',[GenerarConsultasController::class, 'RegistroConsulta']);
 
 
 
