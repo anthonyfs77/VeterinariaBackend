@@ -6,10 +6,12 @@ use proyecto\Controller\LoginController;
 use proyecto\Controller\RegistroController;
 use proyecto\Controller\MostrarProductosController;
 use proyecto\Response\Success;
+use proyecto\Controller\EmpleadosController;
 use proyecto\Controller\VentasController;
 use proyecto\Controller\Ordenes_comprasController;
 use proyecto\Controller\citasController;
 use proyecto\Controller\ProductoController;
+
 
 Router::headers();
 
@@ -28,6 +30,8 @@ Router::get("/pru", function(){
 
 // Ruta de registro de clientes [Pantalla Registro]
 Router::post('/registro', [RegistroController::class, 'registrar']);
+
+Router::post('/registro', [EmpleadosController::class, 'registrar']);
 
 // Consulta para mostrar todos los registros
 Router::get('/mostrarR', [RegistroController::class, 'mostrarR']);
@@ -141,16 +145,6 @@ Router::post('/alterProdInternoExistente', [ProductoController::class, 'modifica
             </style>
         </body>
         </html>
-
-
-
-
-
-
-
-
-
-
 
 
 

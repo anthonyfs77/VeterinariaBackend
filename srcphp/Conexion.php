@@ -2,6 +2,7 @@
 
     namespace proyecto;
     use PDOException;
+
     use PDO;
 
     class Conexion
@@ -28,7 +29,6 @@
             $this->user = $user;
             $this->password = $password;
         }
-    
         /**
          * @return mixed
          */
@@ -99,19 +99,19 @@
         {
             $this->password = $password;
         }
-        public function getPDO(): PDO
-    {
-    try {
-        $dsn = "mysql:host=localhost;port=3307;dbname=$this->dbname";
-        if (self::$DB == null) {
-            self::$DB = new PDO($dsn, $this->user, $this->password);
+        public function getPDO():PDO
+        {
+            try {
+                $dsn = "mysql:host=localhost;port=3307;dbname=$this->dbname";
+                if (self::$DB == null) {
+                    self::$DB = new PDO($dsn, $this->user, $this->password);
+                }
+                return   self::$DB;
+            } catch (PDOException $e) {
+
+                return $e;
+            }
         }
-        return self::$DB;
-    } catch (PDOException $e) {
-        error_log($e->getMessage());
-        die('Hubo un error al conectar a la base de datos.'.$e->getMessage());  
-    }
-}
         public function closeConexion(): void
         {
             self::$DB = null;
