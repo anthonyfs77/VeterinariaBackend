@@ -2,7 +2,6 @@
 namespace proyecto\Models;
 use proyecto\Models\Models;
 
-
 class Productos extends models{
 
     public $nom_producto = '';
@@ -13,10 +12,11 @@ class Productos extends models{
     public $id_proveedor = '';
     public $precio_compra = '';
 
-    protected $filleable = [
+    protected $fillable = [
         "nom_producto", "descripcion", "existencias", "precio_venta", 
         "id_categoria", "id_proveedor", "precio_compra"
     ];
 
     public $table = "productos";
+
 }

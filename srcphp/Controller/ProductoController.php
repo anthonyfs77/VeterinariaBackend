@@ -34,4 +34,267 @@ class ProductoController
             return $r->Send();
         }
     }
+
+
+
+    function AgregarProductoPublico(){
+        try {
+            $JSONData = file_get_contents("php://input");
+            $dataObject = json_decode($JSONData);
+
+            $nom_producto = $dataObject->nombre_producto;
+            $descripcion = $dataObject->descripcion_producto;
+            $precio_venta = $dataObject->precio_venta;
+            $precio_compra = $dataObject->precio_compra;
+            $categoria = $dataObject->categoria_producto;
+            $proveedor = $dataObject->proveedor;
+            $existencias = $dataObject->cantidad_pructos;
+
+            
+            
+            $products = $this->AgregarProductoPublicoQuery($nom_producto, $descripcion, $precio_venta, $precio_compra, $proveedor, $categoria, $existencias );
+
+            $response = ['data' => $products];
+
+
+            header('Content-Type: application/json');
+            echo json_encode(['message' => 'Procedimiento ejecutado correctamente', 'data' => $response]);
+            
+        } catch (\Exception $e) {
+            $errorResponse = ['message' => "Error en el servidor: " . $e->getMessage()];
+            header('Content-Type: application/json');
+            echo json_encode($errorResponse);
+            http_response_code(500);
+        }
+
+    }
+    function AgregarProductoPublicoQuery($nom_producto, $descripcion, $precio_venta, $precio_compra, $categoria, $proveedor, $existencias){
+        $t = table::queryParams("CALL insertar_producto_publico(:nom_producto, :descripcion, :precio_venta, :precio_compra, :categoria, :proveedor, :existencias)", 
+            [
+                'nom_producto' => $nom_producto,
+                'descripcion' => $descripcion,
+                'precio_venta' => $precio_venta, 
+                'precio_compra' => $precio_compra, 
+                'categoria' => $categoria,
+                'proveedor' => $proveedor,
+                'existencias' => $existencias,
+            ]);
+    
+        return $t;
+    }
+
+    
+    function modificarProducto (){
+        try {
+            $JSONData = file_get_contents("php://input");
+            $dataObject = json_decode($JSONData);
+
+            $nom_producto = $dataObject->nombre_producto;
+            $existencias = $dataObject->cantidad_producto;            
+            
+            $products = $this->modificarProductoQuerry($nom_producto, $existencias );
+            $response = ['data' => $products];
+
+
+            header('Content-Type: application/json');
+            echo json_encode(['message' => 'Procedimiento ejecutado correctamente', 'data' => $response]);
+            
+        } catch (\Exception $e) {
+            $errorResponse = ['message' => "Error en el servidor: " . $e->getMessage()];
+            header('Content-Type: application/json');
+            echo json_encode($errorResponse);
+            http_response_code(500);
+        }
+    }
+
+    function modificarProductoQuerry($nom_producto, $existencias) {
+        $r = table::queryParams("CALL actualizar_existencias_producto(:nom_producto,:existencias)",
+            
+            [
+                'nom_producto' => $nom_producto,
+                'existencias' => $existencias
+            ]
+        
+        );
+        return $r;
+
+    }
+
+
+    function modificarDataProducto (){
+        try {
+            $JSONData = file_get_contents("php://input");
+            $dataObject = json_decode($JSONData);
+
+            $nom_producto = $dataObject->nombre;
+            $descripcion = $dataObject->descripcion;
+            $proveedor = $dataObject->proveedor;
+            $categoria = $dataObject->categoria;
+            $precioC = $dataObject->precioC;
+            $precioV = $dataObject->precioV;
+            
+            $products = $this->modificarDataProductoQuerry($nom_producto, $descripcion, $proveedor, $categoria, $precioC, $precioV );
+            $response = ['data' => $products];
+
+
+            header('Content-Type: application/json');
+            echo json_encode(['message' => 'Procedimiento ejecutado correctamente', 'data' => $response]);
+            
+        } catch (\Exception $e) {
+            $errorResponse = ['message' => "Error en el servidor: " . $e->getMessage()];
+            header('Content-Type: application/json');
+            echo json_encode($errorResponse);
+            http_response_code(500);
+        }
+    }
+
+    function modificarDataProductoQuerry($nom_producto, $descripcion, $proveedor, $categoria, $precioC, $precioV ) {
+        $r = table::queryParams("call actualizar_producto(:nom_producto, :descripcion, :precioV, :precioC, :proveedor, :categoria)",
+            
+            [
+                'nom_producto' => $nom_producto,
+                'descripcion' => $descripcion,
+                'proveedor' => $proveedor,
+                'categoria' => $categoria,
+                'precioC' => $precioC,
+                'precioV' => $precioV,
+            ]
+        
+        );
+        return $r;
+
+    }
+
+
+    // AGREGAR PRODUCTO INTERNO
+
+
+    function AgregarProductoInterno(){
+        try {
+            $JSONData = file_get_contents("php://input");
+            $dataObject = json_decode($JSONData);
+
+            $nom_producto = $dataObject->nombre_producto;
+            $descripcion = $dataObject->descripcion_producto;
+            $precio_venta = $dataObject->precio_venta;
+            $categoria = $dataObject->categoria_producto;
+            $proveedor = $dataObject->proveedor;
+            $existencias = $dataObject->cantidad_pructos;
+
+            
+            
+            $products = $this->AgregarProductoInternoQuery($nom_producto, $descripcion, $precio_venta, $proveedor, $categoria, $existencias );
+
+            $response = ['data' => $products];
+
+
+            header('Content-Type: application/json');
+            echo json_encode(['message' => 'Procedimiento ejecutado correctamente', 'data' => $response]);
+            
+        } catch (\Exception $e) {
+            $errorResponse = ['message' => "Error en el servidor: " . $e->getMessage()];
+            header('Content-Type: application/json');
+            echo json_encode($errorResponse);
+            http_response_code(500);
+        }
+
+    }
+    function AgregarProductoInternoQuery($nom_producto, $descripcion, $precio_venta, $categoria, $proveedor, $existencias){
+        $t = table::queryParams("CALL insertar_producto_interno(:nom_producto, :descripcion, :precio_venta, :categoria, :proveedor, :existencias)", 
+            [
+                'nom_producto' => $nom_producto,
+                'descripcion' => $descripcion,
+                'precio_venta' => $precio_venta, 
+                'categoria' => $categoria,
+                'proveedor' => $proveedor,
+                'existencias' => $existencias,
+            ]);
+    
+        return $t;
+    }
+
+
+    // MODIFICAR PRODUCTO INTERNO
+
+
+    function modificarProductoInterno (){
+        try {
+            $JSONData = file_get_contents("php://input");
+            $dataObject = json_decode($JSONData);
+
+            $nom_producto = $dataObject->nombre_producto;
+            $existencias = $dataObject->cantidad_producto;            
+            
+            $products = $this->modificarProductoInternoQuerry($nom_producto, $existencias );
+            $response = ['data' => $products];
+
+
+            header('Content-Type: application/json');
+            echo json_encode(['message' => 'Procedimiento ejecutado correctamente', 'data' => $response]);
+            
+        } catch (\Exception $e) {
+            $errorResponse = ['message' => "Error en el servidor: " . $e->getMessage()];
+            header('Content-Type: application/json');
+            echo json_encode($errorResponse);
+            http_response_code(500);
+        }
+    }
+
+    function modificarProductoInternoQuerry($nom_producto, $existencias) {
+        $r = table::queryParams("CALL actualizar_existencias_producto_interno(:nom_producto,:existencias)",
+            
+            [
+                'nom_producto' => $nom_producto,
+                'existencias' => $existencias
+            ]
+        
+        );
+        return $r;
+
+    }
+
+
+    function modificarDataProductoInterno (){
+        try {
+            $JSONData = file_get_contents("php://input");
+            $dataObject = json_decode($JSONData);
+
+            $nom_producto = $dataObject->nombre;
+            $descripcion = $dataObject->descripcion;
+            $proveedor = $dataObject->proveedor;
+            $categoria = $dataObject->categoria;
+            $precioV = $dataObject->precioV;
+            
+            $products = $this->modificarDataProductoInternoQuerry($nom_producto, $descripcion, $proveedor, $categoria, $precioV );
+            $response = ['data' => $products];
+
+
+            header('Content-Type: application/json');
+            echo json_encode(['message' => 'Procedimiento ejecutado correctamente', 'data' => $response]);
+            
+        } catch (\Exception $e) {
+            $errorResponse = ['message' => "Error en el servidor: " . $e->getMessage()];
+            header('Content-Type: application/json');
+            echo json_encode($errorResponse);
+            http_response_code(500);
+        }
+    }
+
+    // MODIFICAR LA DATA DE UN PRODUCTO EXISTENTE
+
+    function modificarDataProductoInternoQuerry($nom_producto, $descripcion, $proveedor, $categoria, $precioV ) {
+        $r = table::queryParams("call actualizar_producto_interno(:nom_producto, :descripcion, :precioV, :proveedor, :categoria)",
+            
+            [
+                'nom_producto' => $nom_producto,
+                'descripcion' => $descripcion,
+                'proveedor' => $proveedor,
+                'categoria' => $categoria,
+                'precioV' => $precioV,
+            ]
+        
+        );
+        return $r;
+
+    }
 }

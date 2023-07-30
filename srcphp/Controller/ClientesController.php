@@ -20,7 +20,7 @@ class ClientesController{
             $contrasena = $dataObject->contrasena;
     
             // Crea una conexión PDO
-            $db = new \PDO('mysql:host=localhost;dbname=veterinaria;charset=utf8mb4', 'root', '');
+            $db = new \PDO('mysql:host=localhost;dbname=veterinaria; port=3307; charset=utf8mb4', 'root', '');
     
             // Prepara la consulta SQL
             $sql = "UPDATE clientes SET correo = :correo, contrasena = :contrasena WHERE id = :id";

@@ -5,13 +5,25 @@ require("../vendor/autoload.php");
 use proyecto\Controller\LoginController;
 use proyecto\Controller\RegistroController;
 use proyecto\Controller\MostrarProductosController;
-use proyecto\Controller\ClientesController;
 use proyecto\Response\Success;
+use proyecto\Controller\VentasController;
+use proyecto\Controller\Ordenes_comprasController;
+use proyecto\Controller\citasController;
+use proyecto\Controller\ProductoController;
 
 Router::headers();
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
+// funcion de prueba
+Router::get("/pru", function(){
+    $r = new Success("funcionando");
+    $r->Send();
+});
+
+
+
+
 
 
 // Ruta de registro de clientes [Pantalla Registro]
@@ -22,7 +34,6 @@ Router::get('/mostrarR', [RegistroController::class, 'mostrarR']);
 
 // Verificiacion de usuario en login BD -> login
 Router::post('/verificacion', [LoginController::class, 'verificar']);
-
 
 // Mandar Productos
 Router::get('/productos', [MostrarProductosController::class, 'mostrarP']);
@@ -39,31 +50,62 @@ Router::get('/productosPublicos', [MostrarProductosController::class, 'mostrarPr
 // Mandar Rango de precios de productos Publicos
 Router::post('/preciosPublicos', [MostrarProductosController::class,'rangoPreciosPublics']);
 
+// datos para la grafica
+Router::post('/data', [VentasController::class, 'fecha']);
+
+// busqueda de productos
+Router::post('/buscar', [MostrarProductosController::class, 'buscarProducto']);
+
+// busqueda de productos internos
+Router::post('/buscarInterno', [MostrarProductosController::class, 'buscarProductoInterno']);
+
+// Realizar compra 
+Router::post('/compra', [Ordenes_comprasController::class, 'insertarVenta']);
+
+// Mostrar ventas recientes 
+Router::get('/ventasRecientes', [VentasController::class, 'mostrarVentasRecientes']);
+
+// Citas pendientes
+Router::get('/citasPendientes', [citasController::class, 'mostrarCitasPendientes']);
+
+// AGREGAR PRODUCTO 
+Router::post('/agregarProducto', [ProductoController::class, 'AgregarProductoPublico']);
+
+// ALTER PRODUCTO
+Router::post('/alterProduct', [ProductoController::class, 'modificarProducto']);
+
+// ALTER DATA PRODUCT
+Router::post('/dataProd', [ProductoController::class, 'modificarDataProducto']);
+
+// AGREGAR PRODUCTO INTERNO
+Router::post('/dataProdInterno', [ProductoController::class, 'AgregarProductoInterno']);
+
+// MODIFICAR PRODUCTO INTERNO
+Router::post('/alterProdInterno', [ProductoController::class, 'modificarProductoInterno']);
+
+// MODIFICAR PRODUCTO EXISTENTE
+Router::post('/alterProdInternoExistente', [ProductoController::class, 'modificarDataProductoInterno']);
 
 
 
 
 
-// Para buscar clientes por nombre o ID
-Router::post('/clientes/buscar', [ClientesController::class, 'buscarPorNombreOId']);
-
-// obtener el id del cliente
-Router::post('/clientes/info', [ClientesController::class, 'consultarIDcliente']);
-
-// obtener toda info cliente x id
-Router::post('/clientes/infoID', [ClientesController::class, 'obtenerClientePorID']);
-
-// funcion de prueba
-Router::get("/pru", function(){
-    $r = new Success("funcionando");
-    $r->Send();
-});
 
 
-Router::get('/', function() {
-    // código para generar y enviar la página HTML de inicio
-    echo '
-        <!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+?>
+
+    <!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
@@ -99,10 +141,6 @@ Router::get('/', function() {
             </style>
         </body>
         </html>
-    ';
-});
-
-?>
 
 
 
