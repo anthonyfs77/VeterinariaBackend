@@ -27,7 +27,7 @@ class Ordenes_compras extends Models{
        "id_proveedores",
        "id_producto",
        "precio_total",
-       "id_tipoproducto"
+       "id"
     ];
 
     protected $table = "ordenes_compras";

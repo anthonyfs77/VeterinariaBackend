@@ -5,7 +5,6 @@ use PDO;
 
 class Clientes extends Models{
 
-
     public $id = "";
     public $nombre = "";
     public $apellido = "";

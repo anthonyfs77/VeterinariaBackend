@@ -2,9 +2,8 @@
 namespace proyecto\Models;
 use proyecto\Models\Models;
 
-class Productos extends models{
 
-    public $id = '';
+class ProductosInternos extends models{
     public $nom_producto = '';
     public $descripcion = '';
     public $existencias = '';
@@ -14,10 +13,9 @@ class Productos extends models{
     public $precio_compra = '';
 
     protected $filleable = [
-        "id", "nom_producto", "descripcion", "existencias", "precio_venta", 
+        "nom_producto", "descripcion", "existencias", "precio_venta", 
         "id_categoria", "id_proveedor", "precio_compra"
     ];
 
-    public $table = "productos";
-
+    public $table = "productos_internos";
 }

@@ -47,8 +47,9 @@ class ProveedorController {
     
     }
 
-    function NombreIDProveedor () {
 
+    // obtener id, nombre de todos los provedores
+    function NombreIDProveedor () {
         try {
             $resultados = Table::query("SELECT * FROM VistaProveedores;");
             $r = new Success($resultados);
