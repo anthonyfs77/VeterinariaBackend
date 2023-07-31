@@ -15,6 +15,7 @@ class ProveedorController {
             $dataObject = json_decode($JSONData);
 
             $Proveedor = new Proveedores();
+            $Proveedor->empresa = $dataObject->empresa;
             $Proveedor->proveedor = $dataObject->nombre;
             $Proveedor->direccion=$dataObject->direccion;
             $Proveedor->telefono1=$dataObject->telefono1;

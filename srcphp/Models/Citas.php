@@ -2,7 +2,7 @@
 
 namespace proyecto\Models;
 
-class Cita extends Models
+class Citas extends Models
 {
     public $id_cliente = "";
     public $fecha_registro = "";

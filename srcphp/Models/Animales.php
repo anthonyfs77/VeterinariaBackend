@@ -3,7 +3,7 @@
 namespace proyecto\Models;
 use PDO;
 
-class Animal extends Models
+class Animales extends Models
 {
     public $nombre = "";
     public $propietario = "";

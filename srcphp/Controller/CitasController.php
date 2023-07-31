@@ -25,7 +25,7 @@ class citasController {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
     
-            $cita = new Cita();
+            $cita = new Citas();
             $cita->fecha_registro = date('Y-m-d');
             $cita->fecha_cita = $dataObject->fechaCita;
             $cita->id_cliente = $dataObject->id_cliente;

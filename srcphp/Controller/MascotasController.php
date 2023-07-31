@@ -17,7 +17,7 @@ class MascotasController {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
 
-            $animal = new Animal();
+            $animal = new Animales();
             $animal->nombre = $dataObject->nombre_;
             $animal->propietario=$dataObject->propietario_;
             $animal->especie=$dataObject->especie_;
