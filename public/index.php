@@ -16,6 +16,8 @@ use proyecto\Controller\ProductoController;
 use proyecto\Controller\GenerarConsultasController;
 use proyecto\Controller\MascotasController;
 use proyecto\Controller\ReportesController;
+use proyecto\Controller\TiposServiciosController;
+
 
 Router::headers();
 
@@ -90,6 +92,31 @@ Router::get('/clientes/All', [ClientesController::class, 'TablaClientes']);
 // obtener nombres e id de los proveedores
 Router::get('/Proveedores/NombreID', [ProveedorController::class, 'NombreIDProveedor']);
 
+// Realizar compra 
+Router::post('/productosXproductosinternos', [Ordenes_comprasController::class, 'obtenerProductos']);
+
+// Crear un nuevo servicio
+Router::post('/crear-servicio', [TiposServiciosController::class, 'crearServicio']);
+
+// Mover un servicio a borrador
+Router::post('/mover-servicio-a-borrador', [TiposServiciosController::class, 'moverServicioABorrador']);
+
+// Mover un servicio a publico
+Router::post('/mover-servicio-a-publico', [TiposServiciosController::class, 'moverServicioAPublico']);
+
+// filtro de busqueda de tipos de servicios borrador x id_servicio
+Router::post('/obtenerTiposServiciosBorradorPorIdServicio', [TiposServiciosController::class, 'obtenerTiposServiciosBorradorPorIdServicio']);
+
+// filtro de busqueda de tipos de servicios x id_servicio
+Router::post('/obtenerTiposServiciosPublicosPorIdServicio', [TiposServiciosController::class, 'obtenerTiposServiciosPublicosPorIdServicio']);
+
+// obtener todos los tipos servicios borrador
+Router::get('/obtenerTodosTiposServiciosBorradorView', [TiposServiciosController::class, 'obtenerTodosTiposServiciosBorradorView']);
+
+// obtener todos los tipos servicios
+Router::get('/obtenerTodosTiposServiciosView', [TiposServiciosController::class, 'obtenerTodosTiposServiciosView']);
+
+
 // funcion de prueba
 Router::get("/pru", function(){
     $r = new Success("funcionando");
@@ -111,7 +138,7 @@ Router::post('/buscar', [MostrarProductosController::class, 'buscarProducto']);
 Router::post('/buscarInterno', [MostrarProductosController::class, 'buscarProductoInterno']);
 
 // Realizar compra 
-Router::post('/compra', [Ordenes_comprasController::class, 'insertarVenta']);
+Router::post('/orden/compra', [Ordenes_comprasController::class, 'insertarCompra']);
 
 // Mostrar ventas recientes 
 Router::get('/ventasRecientes', [VentasController::class, 'mostrarVentasRecientes']);
