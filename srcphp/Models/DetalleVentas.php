@@ -6,7 +6,6 @@ use PDO;
 
 class DetallesVenta extends Models{
 
-    public $id = "";
     public $id_venta = "";
     public $id_producto = "";
     public $cantidad = "";
@@ -14,7 +13,7 @@ class DetallesVenta extends Models{
     public $subtotal = "";
 
     protected $filleable = [
-       "id", "id_venta","id_producto","cantidad","precio_unitario","subtotal"
+       "id_venta","id_producto","cantidad","precio_unitario","subtotal"
     ];
 
     protected $table = "detalles_venta";

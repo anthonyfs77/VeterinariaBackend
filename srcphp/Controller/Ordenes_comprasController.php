@@ -1,7 +1,12 @@
 <?php
-
 namespace proyecto\Controller;
-use proyecto\Models\Table;
+use proyecto\Models\Ordenes_compras;
+use proyecto\Response\Failure;
+use proyecto\Response\Success;
+use proyecto\models\Table;
+use proyecto\Conexion;
+use proyecto\Models\Models;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Ordenes_comprasController {
     function insertarVenta()

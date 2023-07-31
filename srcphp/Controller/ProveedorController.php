@@ -47,4 +47,18 @@ class ProveedorController {
         }
     
     }
+
+
+    // obtener id, nombre de todos los provedores
+    function NombreIDProveedor () {
+        try {
+            $resultados = Table::query("SELECT * FROM VistaProveedores;");
+            $r = new Success($resultados);
+            return $r->Send();
+        } catch (\Exception $e) {
+            $r = new Failure(401, $e->getMessage());
+            return $r->Send();
+        }  
+    }
+    
 }

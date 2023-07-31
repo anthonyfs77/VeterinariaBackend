@@ -1,0 +1,32 @@
+<?php
+namespace proyecto\Models;
+use proyecto\Auth;
+use PDO;
+
+class Ordenes_compras extends Models{
+    public $fecha_compra = "";
+    public $fecha_pago = "";
+    public $cantidad = "";
+    public $precio_compra = "";
+    public $estado = "";
+    public $id_empleado = "";
+    public $id_proveedores = "";
+    public $id_producto = "";
+    public $precio_total = "";
+    public $id_tipoproducto = "";
+
+    protected $filleable = [
+       "fecha_compra",
+       "fecha_pago",
+       "cantidad",
+       "precio_compra",
+       "estado",
+       "id_empleado",
+       "id_proveedores",
+       "id_producto",
+       "precio_total",
+       "id_tipoproducto"
+    ];
+
+    protected $table = "ordenes_compras";
+}

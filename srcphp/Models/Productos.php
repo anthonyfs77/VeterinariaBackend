@@ -12,7 +12,7 @@ class Productos extends models{
     public $id_proveedor = '';
     public $precio_compra = '';
 
-    protected $fillable = [
+    protected $filleable = [
         "nom_producto", "descripcion", "existencias", "precio_venta", 
         "id_categoria", "id_proveedor", "precio_compra"
     ];

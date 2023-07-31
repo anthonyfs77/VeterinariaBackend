@@ -5,6 +5,8 @@ require("../vendor/autoload.php");
 use proyecto\Controller\LoginController;
 use proyecto\Controller\RegistroController;
 use proyecto\Controller\MostrarProductosController;
+use proyecto\Controller\ClientesController;
+use proyecto\Controller\ProveedorController;
 use proyecto\Response\Success;
 use proyecto\Controller\EmpleadosController;
 use proyecto\Controller\VentasController;
@@ -13,7 +15,6 @@ use proyecto\Controller\citasController;
 use proyecto\Controller\ProductoController;
 use proyecto\Controller\GenerarConsultasController;
 use proyecto\Controller\MascotasController;
-use proyecto\Controller\ProveedorController;
 use proyecto\Controller\ReportesController;
 
 Router::headers();
@@ -71,6 +72,29 @@ Router::get('/productosInternos', [MostrarProductosController::class, 'mostrarPr
 // Mandar Rango de precios de productos Internos
 Router::post('/precios', [MostrarProductosController::class, 'rangoPrecios']);
 
+// para actualizar un cliente
+Router::post('/clientes/actualizar', [ClientesController::class, 'actualizarCliente']);
+
+// Para buscar cliente x correo
+Router::post('/clientes/infoCorreo', [ClientesController::class, 'buscarPorCorreo']);
+
+// obtener el id del cliente
+Router::post('/clientes/info', [ClientesController::class, 'consultarIDcliente']);
+
+// obtener toda info cliente x id
+Router::post('/clientes/infoID', [ClientesController::class, 'obtenerClientePorID']);
+
+// mostrar todos los registros de clientes
+Router::get('/clientes/All', [ClientesController::class, 'TablaClientes']);
+
+// obtener nombres e id de los proveedores
+Router::get('/Proveedores/NombreID', [ProveedorController::class, 'NombreIDProveedor']);
+
+// funcion de prueba
+Router::get("/pru", function(){
+    $r = new Success("funcionando");
+    $r->Send();
+});
 // Mandar Productos Publicos
 Router::get('/productosPublicos', [MostrarProductosController::class, 'mostrarProductsPublic']);
 
@@ -139,6 +163,49 @@ Router::post('/RegistroConsulta',[GenerarConsultasController::class, 'RegistroCo
 
 
 
+
+Router::get('/', function() {
+    // código para generar y enviar la página HTML de inicio
+    echo '
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Backend</title>
+        </head>
+        <body>
+            <div class="ctn">
+                <div class="title">
+                    <h1>Backend.</h1><br>
+                </div>
+            </div>
+
+            <style>
+                body{
+                    margin: 0;
+                    padding: 0;
+                }
+                .ctn{
+                    background-color: #f3b606;
+                    width: 100%;
+                    height: 100vh;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .title{
+                    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+                    font-size: 2em;
+                }
+
+            </style>
+        </body>
+        </html>
+    ';
+});
+
 ?>
 
     <!DOCTYPE html>
@@ -177,6 +244,15 @@ Router::post('/RegistroConsulta',[GenerarConsultasController::class, 'RegistroCo
             </style>
         </body>
         </html>
+
+
+
+
+
+
+
+
+
 
 
 
