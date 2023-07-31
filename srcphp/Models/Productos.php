@@ -4,7 +4,6 @@ use proyecto\Models\Models;
 
 class Productos extends models{
 
-    public $id = '';
     public $nom_producto = '';
     public $descripcion = '';
     public $existencias = '';
@@ -14,7 +13,7 @@ class Productos extends models{
     public $precio_compra = '';
 
     protected $filleable = [
-        "id", "nom_producto", "descripcion", "existencias", "precio_venta", 
+        "nom_producto", "descripcion", "existencias", "precio_venta", 
         "id_categoria", "id_proveedor", "precio_compra"
     ];
 

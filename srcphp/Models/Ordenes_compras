@@ -4,7 +4,6 @@ use proyecto\Auth;
 use PDO;
 
 class Ordenes_compras extends Models{
-    public $id = "";
     public $fecha_compra = "";
     public $fecha_pago = "";
     public $cantidad = "";
@@ -17,7 +16,6 @@ class Ordenes_compras extends Models{
     public $id_tipoproducto = "";
 
     protected $filleable = [
-       "id", 
        "fecha_compra",
        "fecha_pago",
        "cantidad",
@@ -27,7 +25,7 @@ class Ordenes_compras extends Models{
        "id_proveedores",
        "id_producto",
        "precio_total",
-       "id"
+       "id_tipoproducto"
     ];
 
     protected $table = "ordenes_compras";
