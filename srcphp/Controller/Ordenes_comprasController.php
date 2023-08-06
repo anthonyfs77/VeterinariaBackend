@@ -11,39 +11,43 @@ use proyecto\Models\Models;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Ordenes_comprasController {
-    function insertarCompra(){
-        try{
+
+    function CrearOrdenCompra() {
+        try {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
     
-            $orden = new Ordenes_compras();
-            $orden->fecha_compra = $dataObject->fecha_compra;
-            $orden->fecha_pago = $dataObject->fecha_pago;
-            $orden->cantidad = $dataObject->cantidad;
-            $orden->precio_compra = $dataObject->precio_compra;
-            $orden->estado = $dataObject->estado;
-            $orden->id_empleado = $dataObject->id_empleado;
-            $orden->id_proveedores = $dataObject->id_proveedores;
-            $orden->id_producto = $dataObject->id_producto;
-            $orden->precio_total = $dataObject->precio_total;
-            $orden->id_tipoproducto = $dataObject->id_tipoproducto;
+            $ordenCompra = new Ordenes_compras();
     
-            $orden->save();
+            // Asignar valores a las propiedades
+            $ordenCompra->fecha_compra = $dataObject->fecha_compra;
+            $ordenCompra->fecha_pago = $dataObject->fecha_pago;
+            $ordenCompra->estado = $dataObject->estado;
+            $ordenCompra->id_empleado = $dataObject->id_empleado;
+            $ordenCompra->estatus = $dataObject->estatus;
+            $ordenCompra->proveedor = $dataObject->proveedor;
     
-            $r = new Success($orden);
+            $ordenCompra->save();
+    
+            if($ordenCompra) {
+                $r = new Success("Orden de compra creada exitosamente.", $ordenCompra);
+            } else {
+                $r = new Failure(400, "Hubo un error al crear la orden de compra.");
+            }
             return $r->send();
     
-        }catch (\Exception $e){
-            $r = new Failure(401, $e->getMessage());
-            return $r->Send();
+        } catch (\Exception $e) {
+            $r = new Failure(500, $e->getMessage());
+            return $r->send();
         }
     }
     
+    
 
-    // obtener todo de ordenes compras
+    // obtener todo de ordenes compras pendientes
     function TablaOrdenesCompras () {
         try {
-            $resultados = Table::query("SELECT * FROM VistaOrdenesCompras;");
+            $resultados = Table::query("SELECT * FROM OrdenesPendientes;");
     
             $r = new Success($resultados);
             return $r->Send();
@@ -53,23 +57,24 @@ class Ordenes_comprasController {
         }
     }
 
-    // obtiene todos los nmbres e id de los productos y productos_internos dependiendo del parametro que reciba(1, 2)
-    function obtenerProductos() {
+    function buscarOrdenesPorFecha() {
         try {
-            $data = json_decode(file_get_contents('php://input'), true);
-            if (!isset($data['id_tipoproducto'])) {
-                $r = new Failure(400, "El campo id_tipoproducto no fue proporcionado.");
-                return $r->send();
-            }
-            $opcion = $data['id_tipoproducto'];
+            $JSONData = file_get_contents("php://input");
+            $dataObject = json_decode($JSONData);
     
-            $resultados = Table::queryParams("CALL ObtenerProductos(:opcion)", ['opcion' => $opcion]);
+            $params = [
+                'columna' => $dataObject->columna,
+                'fecha1' => $dataObject->fecha1,
+                'fecha2' => $dataObject->fecha2,
+            ];
     
-            if($resultados) {
-                $r = new Success($resultados);
+            $resultado = Table::queryParams("CALL BuscarOrdenesPorFecha(:columna, :fecha1, :fecha2)", $params);
+    
+            if($resultado) {
+                $r = new Success($resultado);
                 return $r->send();
             } else {
-                $r = new Failure(404, "No se encontraron productos para la opción proporcionada.");
+                $r = new Failure(404, "No se encontraron ordenes en el rango de fechas proporcionado.");
                 return $r->send();
             }
         } catch (\Exception $e) {
@@ -77,6 +82,32 @@ class Ordenes_comprasController {
             return $r->send();
         }
     }
+
+    function buscarOrdenesPorEstado() {
+        try {
+            $JSONData = file_get_contents("php://input");
+            $dataObject = json_decode($JSONData);
+    
+            $params = [
+                'columna' => $dataObject->columna,
+            ];
+    
+            $resultado = Table::queryParams("CALL BuscarOrdenesPorEstado(:columna)", $params);
+    
+            if($resultado) {
+                $r = new Success($resultado);
+                return $r->send();
+            } else {
+                $r = new Failure(404, "No se encontraron ordenes con el estado proporcionado.");
+                return $r->send();
+            }
+        } catch (\Exception $e) {
+            $r = new Failure(500, $e->getMessage());
+            return $r->send();
+        }
+    }
+    
+    
     
 }
 

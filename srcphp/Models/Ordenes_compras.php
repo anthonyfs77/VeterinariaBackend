@@ -5,28 +5,21 @@ use proyecto\Models\Models;
 use PDO;
 
 class Ordenes_compras extends Models{
+    public $id = "";
     public $fecha_compra = "";
     public $fecha_pago = "";
-    public $cantidad = "";
-    public $precio_compra = "";
     public $estado = "";
     public $id_empleado = "";
-    public $id_proveedores = "";
-    public $id_producto = "";
-    public $precio_total = "";
-    public $id_tipoproducto = "";
-
+    public $estatus = "";
+    public $proveedor = "";
     protected $filleable = [
+        "id",
        "fecha_compra",
        "fecha_pago",
-       "cantidad",
-       "precio_compra",
        "estado",
        "id_empleado",
-       "id_proveedores",
-       "id_producto",
-       "precio_total",
-       "id_tipoproducto"
+       "estatus",
+       "proveedor"
     ];
 
     protected $table = "ordenes_compras";

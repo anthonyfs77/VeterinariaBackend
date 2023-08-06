@@ -138,7 +138,15 @@ Router::post('/buscar', [MostrarProductosController::class, 'buscarProducto']);
 Router::post('/buscarInterno', [MostrarProductosController::class, 'buscarProductoInterno']);
 
 // Realizar compra 
-Router::post('/orden/compra', [Ordenes_comprasController::class, 'insertarCompra']);
+Router::post('/orden/compra', [Ordenes_comprasController::class, 'CrearOrdenCompra']);
+
+// obtener todos las ordenes de compras pendientes
+Router::get('/orden/pendientes', [Ordenes_comprasController::class, 'TablaOrdenesCompras']);
+
+// buscar por rango/o No, de fecha de de compra o pago 
+Router::post('/orden/porfecha', [Ordenes_comprasController::class, 'buscarOrdenesPorFecha']);
+
+Router::post('/orden/porestado', [Ordenes_comprasController::class, 'buscarOrdenesPorEstado']);
 
 // Mostrar ventas recientes 
 Router::get('/ventasRecientes', [VentasController::class, 'mostrarVentasRecientes']);
