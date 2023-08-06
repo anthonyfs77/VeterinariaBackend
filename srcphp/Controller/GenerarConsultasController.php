@@ -7,50 +7,44 @@ use proyecto\Models\Consultas;
 use proyecto\Response\Response; 
 use proyecto\Models\Table;
 use proyecto\Models\Models;
+use proyecto\Models\Detalle_Consultas;
 use PDO;
 
 class GenerarConsultasController{
 
     function RegistroConsulta (){
-
         try {
-            $JSONData = file_get_contents("php://input");
-            $dataObject = json_decode($JSONData);
-    
-           $Consulta = new Consulta();
-           $Consulta->id_cita = $dataObject->id_cita;
-           $Consulta->observaciones_medicas=$dataObject->observaciones;
-           $Consulta->peso_kg = $dataObject->peso;
-           $Consulta->altura_mts = $dataObject->altura;
-           $Consulta->edad_meses = $dataObject->edad;
-           $Consulta->dosis = $dataObject->dosis;
-           $Consulta->id_productosInternos = $dataObject->id_productosInternos;
+          $JSONData = file_get_contents("php://input");
+          $dataObject = json_decode($JSONData);
 
-           $Consulta->save();
-    
-            $r = new Success($Consulta);
-            return $r->Send();
-        } catch (\Exception $e) {
-            $r = new Failure(401, $e->getMessage());
-        }
-    }
 
-    function GenerarConsultas (){
-        try{
+        
+          $Consulta = new Consultas();
+          $Consulta->id_cita = $dataObject->id_cita;
+          $Consulta->observaciones_medicas = $dataObject->observaciones; 
+          $Consulta->peso_kg = $dataObject->peso; 
+          $Consulta->altura_mts = $dataObject->altura;
+          $Consulta->edad_meses = $dataObject->edad; 
+          $Consulta->save();
 
-            $JSONData = file_get_contents("php://input");
-            $dataObject = json_decode($JSONData);
-            
-            $resultados = Table::query("SELECT * FROM GenerarConsultas ");
-
-            $r = new Success($resultados);
-            return $r->Send();
-        }catch (\Exception $e) {
+          foreach($dataObject->id_productosInternos as $item){
+            $dc =new Detalle_Consultas();
+            $dc-> id_consulta = $Consulta -> id;
+            $dc-> id_producto = $item ->id;
+            $dc-> dosis = $item -> Dosis;
+            $dc-> cantidad = $item -> Cantidad;
+            $dc -> save();
+          }
+           
+          $r = new Success($Consulta);
+          return $r->Send();
+            } catch (\Exception $e) {
             $r = new Failure(401, $e->getMessage());
             return $r->Send();
-        }
-    }
 
+        }
+      }
+      
     function GenerarConsultasCliente () {
 
         try{
@@ -75,7 +69,23 @@ class GenerarConsultasController{
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
             
-            $resultados = Table::query("CALL GenerarConsultasFecha ('{$dataObject->Fecha}') ");
+            $resultados = Table::query("CALL GenerarConsultasFecha ('{$dataObject->Fecha}', '{$dataObject->Fecha2}') ");
+
+            $r = new Success($resultados);
+            return $r->Send();
+        }catch (\Exception $e) {
+            $r = new Failure(401, $e->getMessage());
+            return $r->Send();
+        }
+    }
+
+    function GenerarConsultas (){
+        try{
+
+            $JSONData = file_get_contents("php://input");
+            $dataObject = json_decode($JSONData);
+            
+            $resultados = Table::query("SELECT * FROM GenerarConsultas ");
 
             $r = new Success($resultados);
             return $r->Send();

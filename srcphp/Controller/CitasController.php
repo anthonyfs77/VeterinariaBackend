@@ -3,6 +3,8 @@ namespace proyecto\Controller;
 use proyecto\models\Table;
 use proyecto\Response\Success;
 use proyecto\Models\Citas;
+use proyecto\Models\citas_tservicios;
+use proyecto\Response\Failure;
 
 
 class citasController {
@@ -25,16 +27,20 @@ class citasController {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
     
-            $cita = new Cita();
-            $cita->fecha_registro = date('Y-m-d');
+            $cita = new Citas();
+            $cita->fecha_registro = date('Y-m-d H:i:s');        
             $cita->fecha_cita = $dataObject->fechaCita;
-            $cita->id_cliente = $dataObject->id_cliente;
             $cita->id_mascota = $dataObject->id_mascota;
             $cita->estatus = $dataObject->estatus;
             $cita->motivo = $dataObject->motivo;
-            $cita->tipo_servicio = $dataObject->tipo_servicio;
-            $cita->servicio = $dataObject->id_servicio;
             $cita->save();
+
+            foreach( $dataObject->servicios as $item){
+                $cs = new citas_tservicios;
+                $cs -> cita = $cita -> id;
+                $cs -> tipo_servicio = $item;
+                $cs -> save();
+            }
     
             $r = new Success($cita);
             return $r->Send();
@@ -60,14 +66,15 @@ class citasController {
         }
     }
 
-    function servicio () {
+
+    function ServiciosClinicos () {
 
         try{
 
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
             
-            $resultados = Table::query("SELECT * FROM ObtenerServicios;) ");
+            $resultados = Table::query("SELECT * FROM ServiciosClinicos;) ");
 
             $r = new Success($resultados);
             return $r->Send();
@@ -77,14 +84,14 @@ class citasController {
         }
     }
 
-    function tiposservicios () {
+    function ServiciosEsteticos () {
 
         try{
 
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
             
-            $resultados = Table::query("CALL ObtenerTSid ('{$dataObject->id_servicio}') ");
+            $resultados = Table::query("SELECT * FROM ServiciosEsteticos;) ");
 
             $r = new Success($resultados);
             return $r->Send();

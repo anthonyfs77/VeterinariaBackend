@@ -17,13 +17,12 @@ class MascotasController {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
 
-            $animal = new Animal();
+            $animal = new Animales();
             $animal->nombre = $dataObject->nombre_;
             $animal->propietario=$dataObject->propietario_;
             $animal->especie=$dataObject->especie_;
             $animal->raza=$dataObject->raza_;
             $animal->genero=$dataObject->genero_; 
-
             $animal->save();
     
             $r = new Success($animal);
