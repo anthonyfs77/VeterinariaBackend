@@ -32,7 +32,6 @@ Router::get("/pru", function(){
 Router::post('/historialMedico', [ReportesController::class, 'historialMedico']);
 Router::post('/historialMedicoCliente',[ReportesController::class, 'historialMedicoCliente']);
 
-Router::post('/ReporteConsultasGeneral',[ReportesController::class, 'ReporteConsultasGeneral']);
 Router::post('/ReporteConsultasFecha',[ReportesController::class, 'ReporteConsultasFecha']);
 Router::post('/ReporteConsultasCliente',[ReportesController::class, 'ReporteConsultasCliente']);
 
@@ -120,8 +119,8 @@ Router::get('/ventasRecientes', [VentasController::class, 'mostrarVentasReciente
 Router::get('/citasPendientes', [citasController::class, 'mostrarCitasPendientes']);
 Router::post('/agendarcita', [citasController::class, 'agendarcita']);
 Router::post('/MascotasUsuario', [citasController::class, 'MascotasUsuario']);
-Router::post('/servicio', [citasController::class, 'servicio']);
-Router::post('/tiposservicios', [citasController::class, 'tiposservicios']);
+Router::post('/ServiciosClinicos', [citasController::class, 'ServiciosClinicos']);
+Router::post('/ServiciosEsteticos', [citasController::class, 'ServiciosEsteticos']);
 
 // AGREGAR PRODUCTO 
 Router::post('/agregarProducto', [ProductoController::class, 'AgregarProductoPublico']);
@@ -164,98 +163,46 @@ Router::post('/RegistroConsulta',[GenerarConsultasController::class, 'RegistroCo
 
 
 
-Router::get('/', function() {
-    // código para generar y enviar la página HTML de inicio
-    echo '
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Backend</title>
-        </head>
-        <body>
-            <div class="ctn">
-                <div class="title">
-                    <h1>Backend.</h1><br>
-                </div>
-            </div>
+// Router::get('/', function() {
+//     // código para generar y enviar la página HTML de inicio
+//     echo '
+//         <!DOCTYPE html>
+//         <html lang="en">
+//         <head>
+//             <meta charset="UTF-8">
+//             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//             <title>Backend</title>
+//         </head>
+//         <body>
+//             <div class="ctn">
+//                 <div class="title">
+//                     <h1>Backend.</h1><br>
+//                 </div>
+//             </div>
 
-            <style>
-                body{
-                    margin: 0;
-                    padding: 0;
-                }
-                .ctn{
-                    background-color: #f3b606;
-                    width: 100%;
-                    height: 100vh;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
+//             <style>
+//                 body{
+//                     margin: 0;
+//                     padding: 0;
+//                 }
+//                 .ctn{
+//                     background-color: #f3b606;
+//                     width: 100%;
+//                     height: 100vh;
+//                     display: flex;
+//                     justify-content: center;
+//                     align-items: center;
+//                 }
 
-                .title{
-                    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
-                    font-size: 2em;
-                }
+//                 .title{
+//                     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+//                     font-size: 2em;
+//                 }
 
-            </style>
-        </body>
-        </html>
-    ';
-});
+//             </style>
+//         </body>
+//         </html>
+//     ';
+// });
 
-?>
-
-    <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Backend</title>
-        </head>
-        <body>
-            <div class="ctn">
-                <div class="title">
-                    <h1>Backend.</h1><br>
-                </div>
-            </div>
-
-            <style>
-                body{
-                    margin: 0;
-                    padding: 0;
-                }
-                .ctn{
-                    background-color: #f3b606;
-                    width: 100%;
-                    height: 100vh;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-
-                .title{
-                    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
-                    font-size: 2em;
-                }
-
-            </style>
-        </body>
-        </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// 
