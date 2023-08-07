@@ -41,22 +41,6 @@ class ReportesController {
         }
     }
 
-
-    function ReporteConsultasGeneral () {
-        try{
-            $JSONData = file_get_contents("php://input");
-            $dataObject = json_decode($JSONData);
-
-            $resultados = Table::query(" SELECT * FROM ReporteGralConsultasRealizadas ");
-
-            $r = new Success($resultados);
-            return $r->Send();
-        }catch (\Exception $e) {
-            $r = new Failure(401, $e->getMessage());
-            return $r->Send();
-        }
-    }
-
     function ReporteConsultasFecha () {
 
         try{
@@ -64,7 +48,7 @@ class ReportesController {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
             
-            $resultados = Table::query("CALL ReporteConsultasFecha ('{$dataObject->Fecha}') ");
+            $resultados = Table::query("CALL ReporteConsultasFecha ('{$dataObject->Fecha}','{$dataObject->Fecha2}') ");
 
             $r = new Success($resultados);
             return $r->Send();
@@ -75,13 +59,12 @@ class ReportesController {
     }
 
     function ReporteConsultasCliente () {
-
         try{
 
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
             
-            $resultados = Table::query("CALL ReporteConsultasCliente ('{$dataObject->Nombre}','{$dataObject->Apellido}') ");
+            $resultados = Table::query("CALL ReporteConsultasCliente ('{$dataObject->Nombre}','{$dataObject->Apellido}','{$dataObject->Fecha}','{$dataObject->Fecha2}') ");
 
             $r = new Success($resultados);
             return $r->Send();
@@ -195,7 +178,7 @@ class ReportesController {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
             
-            $resultados = Table::query("CALL ReporteCitasRechazadasFecha ('{$dataObject->Fecha}') ");
+            $resultados = Table::query("CALL ReporteCitasRechazadasFecha ('{$dataObject->Fecha}','{$dataObject->Fecha2}') ");
 
             $r = new Success($resultados);
             return $r->Send();

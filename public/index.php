@@ -16,7 +16,8 @@ use proyecto\Controller\ProductoController;
 use proyecto\Controller\GenerarConsultasController;
 use proyecto\Controller\MascotasController;
 use proyecto\Controller\ReportesController;
-use proyecto\Models\Proveedores;
+use proyecto\Controller\TiposServiciosController;
+
 
 Router::headers();
 
@@ -33,7 +34,6 @@ Router::get("/pru", function(){
 Router::post('/historialMedico', [ReportesController::class, 'historialMedico']);
 Router::post('/historialMedicoCliente',[ReportesController::class, 'historialMedicoCliente']);
 
-Router::post('/ReporteConsultasGeneral',[ReportesController::class, 'ReporteConsultasGeneral']);
 Router::post('/ReporteConsultasFecha',[ReportesController::class, 'ReporteConsultasFecha']);
 Router::post('/ReporteConsultasCliente',[ReportesController::class, 'ReporteConsultasCliente']);
 
@@ -94,6 +94,31 @@ Router::get('/clientes/All', [ClientesController::class, 'TablaClientes']);
 // obtener nombres e id de los proveedores
 Router::get('/Proveedores/NombreID', [ProveedorController::class, 'NombreIDProveedor']);
 
+// Realizar compra 
+Router::post('/productosXproductosinternos', [Ordenes_comprasController::class, 'obtenerProductos']);
+
+// Crear un nuevo servicio
+Router::post('/crear-servicio', [TiposServiciosController::class, 'crearServicio']);
+
+// Mover un servicio a borrador
+Router::post('/mover-servicio-a-borrador', [TiposServiciosController::class, 'moverServicioABorrador']);
+
+// Mover un servicio a publico
+Router::post('/mover-servicio-a-publico', [TiposServiciosController::class, 'moverServicioAPublico']);
+
+// filtro de busqueda de tipos de servicios borrador x id_servicio
+Router::post('/obtenerTiposServiciosBorradorPorIdServicio', [TiposServiciosController::class, 'obtenerTiposServiciosBorradorPorIdServicio']);
+
+// filtro de busqueda de tipos de servicios x id_servicio
+Router::post('/obtenerTiposServiciosPublicosPorIdServicio', [TiposServiciosController::class, 'obtenerTiposServiciosPublicosPorIdServicio']);
+
+// obtener todos los tipos servicios borrador
+Router::get('/obtenerTodosTiposServiciosBorradorView', [TiposServiciosController::class, 'obtenerTodosTiposServiciosBorradorView']);
+
+// obtener todos los tipos servicios
+Router::get('/obtenerTodosTiposServiciosView', [TiposServiciosController::class, 'obtenerTodosTiposServiciosView']);
+
+
 // funcion de prueba
 Router::get("/pru", function(){
     $r = new Success("funcionando");
@@ -117,7 +142,15 @@ Router::post('/buscarlimit', [MostrarProductosController::class, 'buscarProducto
 Router::post('/buscarInterno', [MostrarProductosController::class, 'buscarProductoInterno']);
 
 // Realizar compra 
-Router::post('/compra', [Ordenes_comprasController::class, 'insertarVenta']);
+Router::post('/orden/compra', [Ordenes_comprasController::class, 'CrearOrdenCompra']);
+
+// obtener todos las ordenes de compras pendientes
+Router::get('/orden/pendientes', [Ordenes_comprasController::class, 'TablaOrdenesCompras']);
+
+// buscar por rango/o No, de fecha de de compra o pago 
+Router::post('/orden/porfecha', [Ordenes_comprasController::class, 'buscarOrdenesPorFecha']);
+
+Router::post('/orden/porestado', [Ordenes_comprasController::class, 'buscarOrdenesPorEstado']);
 
 // Mostrar ventas recientes 
 Router::get('/ventasRecientes', [VentasController::class, 'mostrarVentasRecientes']);
@@ -127,8 +160,8 @@ Router::get('/citasPendientes', [citasController::class, 'mostrarCitasPendientes
 
 Router::post('/agendarcita', [citasController::class, 'agendarcita']);
 Router::post('/MascotasUsuario', [citasController::class, 'MascotasUsuario']);
-Router::post('/servicio', [citasController::class, 'servicio']);
-Router::post('/tiposservicios', [citasController::class, 'tiposservicios']);
+Router::post('/ServiciosClinicos', [citasController::class, 'ServiciosClinicos']);
+Router::post('/ServiciosEsteticos', [citasController::class, 'ServiciosEsteticos']);
 
 // AGREGAR PRODUCTO 
 Router::post('/agregarProducto', [ProductoController::class, 'AgregarProductoPublico']);
@@ -180,98 +213,46 @@ Router::get('/total_ventas', [MostrarProductosController::class, 'cantidad_venta
 
 
 
-Router::get('/', function() {
-    // código para generar y enviar la página HTML de inicio
-    echo '
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Backend</title>
-        </head>
-        <body>
-            <div class="ctn">
-                <div class="title">
-                    <h1>Backend.</h1><br>
-                </div>
-            </div>
+// Router::get('/', function() {
+//     // código para generar y enviar la página HTML de inicio
+//     echo '
+//         <!DOCTYPE html>
+//         <html lang="en">
+//         <head>
+//             <meta charset="UTF-8">
+//             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//             <title>Backend</title>
+//         </head>
+//         <body>
+//             <div class="ctn">
+//                 <div class="title">
+//                     <h1>Backend.</h1><br>
+//                 </div>
+//             </div>
 
-            <style>
-                body{
-                    margin: 0;
-                    padding: 0;
-                }
-                .ctn{
-                    background-color: #f3b606;
-                    width: 100%;
-                    height: 100vh;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
+//             <style>
+//                 body{
+//                     margin: 0;
+//                     padding: 0;
+//                 }
+//                 .ctn{
+//                     background-color: #f3b606;
+//                     width: 100%;
+//                     height: 100vh;
+//                     display: flex;
+//                     justify-content: center;
+//                     align-items: center;
+//                 }
 
-                .title{
-                    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
-                    font-size: 2em;
-                }
+//                 .title{
+//                     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+//                     font-size: 2em;
+//                 }
 
-            </style>
-        </body>
-        </html>
-    ';
-});
+//             </style>
+//         </body>
+//         </html>
+//     ';
+// });
 
-?>
-
-    <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Backend</title>
-        </head>
-        <body>
-            <div class="ctn">
-                <div class="title">
-                    <h1>Backend.</h1><br>
-                </div>
-            </div>
-
-            <style>
-                body{
-                    margin: 0;
-                    padding: 0;
-                }
-                .ctn{
-                    background-color: #f3b606;
-                    width: 100%;
-                    height: 100vh;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-
-                .title{
-                    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
-                    font-size: 2em;
-                }
-
-            </style>
-        </body>
-        </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// 

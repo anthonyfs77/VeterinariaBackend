@@ -23,7 +23,6 @@ class MascotasController {
             $animal->especie=$dataObject->especie_;
             $animal->raza=$dataObject->raza_;
             $animal->genero=$dataObject->genero_; 
-
             $animal->save();
     
             $r = new Success($animal);
