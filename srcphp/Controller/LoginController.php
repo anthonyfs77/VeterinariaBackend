@@ -43,6 +43,7 @@ class LoginController
     {
         $resultados = Table::queryParams("SELECT * FROM clientes WHERE correo = :correo", ['correo' => $correo]);
 
+        
         if (count($resultados) > 0) {
             $usuario = $resultados[0];
             if ($usuario->contrasena === $contrasena) {

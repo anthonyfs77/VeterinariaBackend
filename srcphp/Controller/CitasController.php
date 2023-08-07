@@ -7,11 +7,11 @@ use proyecto\Models\Citas;
 
 class citasController {
     function mostrarCitasPendientes() {
-        $t = Table::query("SELECT id, fecha_cita, motivo
+        $t = Table::query("SELECT *
         FROM citas
-        WHERE estatus = 'pendiente'
-        LIMIT 5;        
-    ");
+        WHERE DATE(fecha_cita) >= CURDATE() AND DATE(fecha_cita) <= CURDATE() + INTERVAL 2 DAY
+        LIMIT 3;
+        ");
     $r = new Success($t);
     $json_response = json_encode($r);
 
@@ -24,7 +24,7 @@ class citasController {
         try {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
-    
+
             $cita = new Citas();
             $cita->fecha_registro = date('Y-m-d');
             $cita->fecha_cita = $dataObject->fechaCita;

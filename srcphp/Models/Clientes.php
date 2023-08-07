@@ -12,10 +12,9 @@ class Clientes extends Models{
     public $telefono1 = "";
     public $telefono2 = "";
     public $contrasena = "";
-    public $fotourl = "";
 
     protected $filleable = [
-       "id", "nombre","apellido","correo","telefono1","telefono2","contrasena", "fotourl"
+       "id", "nombre","apellido","correo","telefono1","telefono2","contrasena"
     ];
 
     protected $table = "clientes";
