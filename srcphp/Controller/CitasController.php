@@ -11,11 +11,11 @@ use proyecto\Response\Failure;
 
 class citasController {
     function mostrarCitasPendientes() {
-        $t = Table::query("SELECT id, fecha_cita, motivo
+        $t = Table::query("SELECT *
         FROM citas
-        WHERE estatus = 'pendiente'
-        LIMIT 5;        
-    ");
+        WHERE DATE(fecha_cita) >= CURDATE() AND DATE(fecha_cita) <= CURDATE() + INTERVAL 2 DAY
+        LIMIT 3;
+        ");
     $r = new Success($t);
     $json_response = json_encode($r);
 
@@ -28,7 +28,7 @@ class citasController {
         try {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
-    
+
             $cita = new Citas();
             $cita->fecha_registro = date('Y-m-d H:i:s');        
             $cita->fecha_cita = $dataObject->fechaCita;
@@ -108,58 +108,64 @@ class citasController {
         try {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
-    
-            $cliente = new Clientes();
-            $cliente->nombre = $dataObject->nombre;
-            $cliente->apellido = $dataObject->apellido;
-            $cliente->telefono1 = $dataObject->telefono1;
-            $cliente->telefono2 = $dataObject->telefono2;
-            $cliente->save();
-    
-            if(!$cliente || !isset($cliente->id)) {
-                $r = new Failure(400, "Hubo un error al crear el cliente.");
-                return $r->send();
+            
+            $entities = [
+                'cliente' => [
+                    'model' => new Clientes(),
+                    'data' => [
+                        'nombre' => $dataObject->nombre,
+                        'apellido' => $dataObject->apellido,
+                        'telefono1' => $dataObject->telefono1,
+                        'telefono2' => $dataObject->telefono2
+                    ],
+                    'error_message' => "Hubo un error al crear el cliente."
+                ],
+                'animal' => [
+                    'model' => new Animales(),
+                    'data' => [
+                        'nombre' => $dataObject->nombre_animal,
+                        'propietario' => $dataObject->cliente->id,
+                        'especie' => $dataObject->especie,
+                        'raza' => $dataObject->raza,
+                        'genero' => $dataObject->genero
+                    ],
+                    'error_message' => "Hubo un error al registrar el animal."
+                ],
+                'cita' => [
+                    'model' => new Citas(),
+                    'data' => [
+                        'fecha_registro' => date('Y-m-d H:i:s'),
+                        'fecha_cita' => $dataObject->fecha_cita,
+                        'id_mascota' => $dataObject->animal->id,
+                        'estatus' => $dataObject->estatus,
+                        'motivo' => $dataObject->motivo
+                    ],
+                    'error_message' => "Hubo un error al programar la cita."
+                ]
+            ];
+            
+            $results = [];
+            foreach ($entities as $key => $entity) {
+                foreach ($entity['data'] as $prop => $val) {
+                    $entity['model']->$prop = $val;
+                }
+                $entity['model']->save();
+                if (!$entity['model'] || !isset($entity['model']->id)) {
+                    $r = new Failure(400, $entity['error_message']);
+                    return $r->send();
+                }
+                $results[$key] = $entity['model'];
             }
     
-            $animal = new Animales();
-            $animal->nombre = $dataObject->nombre_animal;
-            $animal->propietario = $cliente->id;
-            $animal->especie = $dataObject->especie;
-            $animal->raza = $dataObject->raza;
-            $animal->genero = $dataObject->genero;
-            $animal->save();
-    
-            if(!$animal || !isset($animal->id)) {
-                $r = new Failure(400, "Hubo un error al registrar el animal.");
-                return $r->send();
-            }
-    
-            $cita = new Citas();
-            $cita->fecha_registro = date('Y-m-d H:i:s');
-            $cita->fecha_cita = $dataObject->fecha_cita;
-            $cita->id_mascota = $animal->id;
-            $cita->estatus = $dataObject->estatus;
-            $cita->motivo = $dataObject->motivo;
-            $cita->save();
-    
-            if(!$cita) {
-                $r = new Failure(400, "Hubo un error al programar la cita.");
-                return $r->send();
-            }
-    
-            $r = new Success("Datos registrados exitosamente.", [
-                'cliente' => $cliente,
-                'animal' => $animal,
-                'cita' => $cita
-            ]);
-    
+            $r = new Success("Datos registrados exitosamente.", $results);
             return $r->send();
-    
+            
         } catch (\Exception $e) {
             $r = new Failure(500, $e->getMessage());
             return $r->send();
         }
     }
+    
     
 
 }
