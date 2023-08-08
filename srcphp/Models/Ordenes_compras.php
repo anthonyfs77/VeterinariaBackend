@@ -8,17 +8,17 @@ class Ordenes_compras extends Models{
     public $id = "";
     public $fecha_compra = "";
     public $fecha_pago = "";
-    public $estado = "";
+    public $estado_pago = "";
     public $id_empleado = "";
-    public $estatus = "";
+    public $estado = "";
     public $proveedor = "";
     protected $filleable = [
         "id",
        "fecha_compra",
        "fecha_pago",
-       "estado",
+       "estado_pago",
        "id_empleado",
-       "estatus",
+       "estado",
        "proveedor"
     ];
 

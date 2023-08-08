@@ -3,6 +3,7 @@ namespace proyecto\Controller;
 use proyecto\Models\Ordenes_compras;
 use proyecto\Models\Productos;
 use proyecto\Models\ProductosInternos;
+use proyecto\Models\DetalleCompras;
 use proyecto\Response\Failure;
 use proyecto\Response\Success;
 use proyecto\models\Table;
@@ -22,9 +23,9 @@ class Ordenes_comprasController {
             // Asignar valores a las propiedades
             $ordenCompra->fecha_compra = $dataObject->fecha_compra;
             $ordenCompra->fecha_pago = $dataObject->fecha_pago;
-            $ordenCompra->estado = $dataObject->estado;
+            $ordenCompra->estado_pago = $dataObject->estado;
             $ordenCompra->id_empleado = $dataObject->id_empleado;
-            $ordenCompra->estatus = $dataObject->estatus;
+            $ordenCompra->estado = $dataObject->estatus;
             $ordenCompra->proveedor = $dataObject->proveedor;
     
             $ordenCompra->save();
@@ -41,8 +42,6 @@ class Ordenes_comprasController {
             return $r->send();
         }
     }
-    
-    
 
     // obtener todo de ordenes compras pendientes
     function TablaOrdenesCompras () {
@@ -106,6 +105,37 @@ class Ordenes_comprasController {
             return $r->send();
         }
     }
+
+    function agregarDetalleCompras() {
+        try {
+            $JSONData = file_get_contents("php://input");
+            $dataObject = json_decode($JSONData);
+    
+            $orden_compra = $dataObject->orden_compra;
+            $detalles_compra = $dataObject->productos;
+            foreach ($detalles_compra as $detalle) {
+                $params = [
+                    'orden_compra' => $orden_compra,
+                    'producto' => $detalle->producto,
+                    'cantidad' => $detalle->cantidad,
+                    'precio_compra' => $detalle->precio_compra,
+                ];
+    
+                $resultado = Table::queryParams("CALL AgregarDetalleCompras(:orden_compra, :producto, :cantidad, :precio_compra)", $params);
+            }
+    
+            $r = new Success($resultado);
+            return $r->Send();
+        } catch (\Exception $e) {
+            $r = new Failure(401, $e->getMessage());
+            return $r->Send();
+        }
+    }
+    
+    
+    
+    
+    
     
     
     

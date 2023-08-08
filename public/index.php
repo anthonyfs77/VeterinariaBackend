@@ -67,6 +67,9 @@ Router::post('/verificacion', [LoginController::class, 'verificar']);
 // Mandar Productos
 Router::get('/productos', [MostrarProductosController::class, 'mostrarP']);
 
+// mostrar todos prductos de la vista
+Router::get('/productos/all', [MostrarProductosController::class, 'TablaProductos']);
+
 // Mandar Productos internos
 Router::get('/productosInternos', [MostrarProductosController::class, 'mostrarProductsInter']);
 
@@ -91,8 +94,8 @@ Router::get('/clientes/All', [ClientesController::class, 'TablaClientes']);
 // obtener nombres e id de los proveedores
 Router::get('/Proveedores/NombreID', [ProveedorController::class, 'NombreIDProveedor']);
 
-// Realizar compra 
-Router::post('/productosXproductosinternos', [Ordenes_comprasController::class, 'obtenerProductos']);
+// Realizar detalles de compras x id y json
+Router::post('/orden/Detalles', [Ordenes_comprasController::class, 'agregarDetalleCompras']);
 
 // Crear un nuevo servicio
 Router::post('/crear-servicio', [TiposServiciosController::class, 'crearServicio']);
@@ -149,6 +152,10 @@ Router::post('/orden/porestado', [Ordenes_comprasController::class, 'buscarOrden
 
 // Mostrar ventas recientes 
 Router::get('/ventasRecientes', [VentasController::class, 'mostrarVentasRecientes']);
+
+// generar cita local, inserccion de cliente, animal y cita
+Router::post('/citalocal', [citasController::class, 'CrearRegistroVeterinario']);
+
 
 // Citas pendientes
 Router::get('/citasPendientes', [citasController::class, 'mostrarCitasPendientes']);

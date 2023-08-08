@@ -3,6 +3,8 @@ namespace proyecto\Controller;
 use proyecto\models\Table;
 use proyecto\Response\Success;
 use proyecto\Models\Citas;
+use proyecto\Models\Animales;
+use proyecto\Models\Clientes;
 use proyecto\Models\citas_tservicios;
 use proyecto\Response\Failure;
 
@@ -100,6 +102,65 @@ class citasController {
             return $r->Send();
         }
     }
+
+    // generar cliente, mascota y cita
+    function CrearRegistroVeterinario() {
+        try {
+            $JSONData = file_get_contents("php://input");
+            $dataObject = json_decode($JSONData);
+    
+            $cliente = new Clientes();
+            $cliente->nombre = $dataObject->nombre;
+            $cliente->apellido = $dataObject->apellido;
+            $cliente->telefono1 = $dataObject->telefono1;
+            $cliente->telefono2 = $dataObject->telefono2;
+            $cliente->save();
+    
+            if(!$cliente || !isset($cliente->id)) {
+                $r = new Failure(400, "Hubo un error al crear el cliente.");
+                return $r->send();
+            }
+    
+            $animal = new Animales();
+            $animal->nombre = $dataObject->nombre_animal;
+            $animal->propietario = $cliente->id;
+            $animal->especie = $dataObject->especie;
+            $animal->raza = $dataObject->raza;
+            $animal->genero = $dataObject->genero;
+            $animal->save();
+    
+            if(!$animal || !isset($animal->id)) {
+                $r = new Failure(400, "Hubo un error al registrar el animal.");
+                return $r->send();
+            }
+    
+            $cita = new Citas();
+            $cita->fecha_registro = date('Y-m-d H:i:s');
+            $cita->fecha_cita = $dataObject->fecha_cita;
+            $cita->id_mascota = $animal->id;
+            $cita->estatus = $dataObject->estatus;
+            $cita->motivo = $dataObject->motivo;
+            $cita->save();
+    
+            if(!$cita) {
+                $r = new Failure(400, "Hubo un error al programar la cita.");
+                return $r->send();
+            }
+    
+            $r = new Success("Datos registrados exitosamente.", [
+                'cliente' => $cliente,
+                'animal' => $animal,
+                'cita' => $cita
+            ]);
+    
+            return $r->send();
+    
+        } catch (\Exception $e) {
+            $r = new Failure(500, $e->getMessage());
+            return $r->send();
+        }
+    }
+    
 
 }
 
