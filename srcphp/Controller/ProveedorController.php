@@ -17,9 +17,9 @@ class ProveedorController {
             $Proveedor = new Proveedores();
             $Proveedor->empresa = $dataObject->empresa;
             $Proveedor->proveedor = $dataObject->nombre;
-            $Proveedor->direccion=$dataObject->direccion;
-            $Proveedor->telefono1=$dataObject->telefono1;
-            $Proveedor->telefono2=$dataObject->telefono2;
+            $Proveedor->direccion = $dataObject->direccion;
+            $Proveedor->telefono1 = $dataObject->telefono1;
+            $Proveedor->telefono2 = $dataObject->telefono2;
     
             $Proveedor->save();
     
@@ -29,6 +29,22 @@ class ProveedorController {
             $r = new Failure(401, $e->getMessage());
         }
     }
+
+    function proveedores(){
+        try {
+            $JSONData = file_get_contents("php://input");
+            $dataObject = json_decode($JSONData);
+    
+            $result = table::query("SELECT * from proveedores");
+    
+            $r = new success($result);
+            return $r->Send();
+        } catch (\Exception $e) {
+            $r = new Failure(401, $e->getMessage());
+            return $r->Send();
+        }
+    }
+    
 
     function TablaProveedor () {
 

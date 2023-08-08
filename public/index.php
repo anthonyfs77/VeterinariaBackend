@@ -17,6 +17,8 @@ use proyecto\Controller\GenerarConsultasController;
 use proyecto\Controller\MascotasController;
 use proyecto\Controller\ReportesController;
 use proyecto\Controller\HistorialMedicoController;
+use proyecto\Controller\TiposServiciosController;
+
 
 Router::headers();
 
@@ -49,6 +51,7 @@ Router::post('/ReporteGralVentas',[ReportesController::class, 'ReporteGralVentas
 Router::post('/ReporteFechaVentas',[ReportesController::class, 'ReporteFechaVentas']);
 
 Router::post('/registrarProveedor',[ProveedorController::class, 'registrarProveedor']);
+
 Router::post('/TablaProveedor',[ProveedorController::class, 'TablaProveedor']);
 
 Router::post('/especie', [MascotasController::class, 'especie']);
@@ -68,8 +71,13 @@ Router::post('/verificacion', [LoginController::class, 'verificar']);
 // Mandar Productos
 Router::get('/productos', [MostrarProductosController::class, 'mostrarP']);
 
+// mostrar todos prductos de la vista
+Router::get('/productos/all', [MostrarProductosController::class, 'TablaProductos']);
+
 // Mandar Productos internos
 Router::get('/productosInternos', [MostrarProductosController::class, 'mostrarProductsInter']);
+
+Router::get('/bajaProductos', [MostrarProductosController::class, 'mostrarProductosBajaExistencia']);
 
 // Mandar Rango de precios de productos Internos
 Router::post('/precios', [MostrarProductosController::class, 'rangoPrecios']);
@@ -92,6 +100,31 @@ Router::get('/clientes/All', [ClientesController::class, 'TablaClientes']);
 // obtener nombres e id de los proveedores
 Router::get('/Proveedores/NombreID', [ProveedorController::class, 'NombreIDProveedor']);
 
+// Realizar detalles de compras x id y json
+Router::post('/orden/Detalles', [Ordenes_comprasController::class, 'agregarDetalleCompras']);
+
+// Crear un nuevo servicio
+Router::post('/crear-servicio', [TiposServiciosController::class, 'crearServicio']);
+
+// Mover un servicio a borrador
+Router::post('/mover-servicio-a-borrador', [TiposServiciosController::class, 'moverServicioABorrador']);
+
+// Mover un servicio a publico
+Router::post('/mover-servicio-a-publico', [TiposServiciosController::class, 'moverServicioAPublico']);
+
+// filtro de busqueda de tipos de servicios borrador x id_servicio
+Router::post('/obtenerTiposServiciosBorradorPorIdServicio', [TiposServiciosController::class, 'obtenerTiposServiciosBorradorPorIdServicio']);
+
+// filtro de busqueda de tipos de servicios x id_servicio
+Router::post('/obtenerTiposServiciosPublicosPorIdServicio', [TiposServiciosController::class, 'obtenerTiposServiciosPublicosPorIdServicio']);
+
+// obtener todos los tipos servicios borrador
+Router::get('/obtenerTodosTiposServiciosBorradorView', [TiposServiciosController::class, 'obtenerTodosTiposServiciosBorradorView']);
+
+// obtener todos los tipos servicios
+Router::get('/obtenerTodosTiposServiciosView', [TiposServiciosController::class, 'obtenerTodosTiposServiciosView']);
+
+
 // funcion de prueba
 Router::get("/pru", function(){
     $r = new Success("funcionando");
@@ -109,17 +142,32 @@ Router::post('/data', [VentasController::class, 'fecha']);
 // busqueda de productos
 Router::post('/buscar', [MostrarProductosController::class, 'buscarProducto']);
 
+Router::post('/buscarlimit', [MostrarProductosController::class, 'buscarProductolimite']);
+
 // busqueda de productos internos
 Router::post('/buscarInterno', [MostrarProductosController::class, 'buscarProductoInterno']);
 
 // Realizar compra 
-Router::post('/compra', [Ordenes_comprasController::class, 'insertarVenta']);
+Router::post('/orden/compra', [Ordenes_comprasController::class, 'CrearOrdenCompra']);
+
+// obtener todos las ordenes de compras pendientes
+Router::get('/orden/pendientes', [Ordenes_comprasController::class, 'TablaOrdenesCompras']);
+
+// buscar por rango/o No, de fecha de de compra o pago 
+Router::post('/orden/porfecha', [Ordenes_comprasController::class, 'buscarOrdenesPorFecha']);
+
+Router::post('/orden/porestado', [Ordenes_comprasController::class, 'buscarOrdenesPorEstado']);
 
 // Mostrar ventas recientes 
 Router::get('/ventasRecientes', [VentasController::class, 'mostrarVentasRecientes']);
 
+// generar cita local, inserccion de cliente, animal y cita
+Router::post('/citalocal', [citasController::class, 'CrearRegistroVeterinario']);
+
+
 // Citas pendientes
 Router::get('/citasPendientes', [citasController::class, 'mostrarCitasPendientes']);
+
 Router::post('/agendarcita', [citasController::class, 'agendarcita']);
 Router::post('/MascotasUsuario', [citasController::class, 'MascotasUsuario']);
 Router::post('/ServiciosClinicos', [citasController::class, 'ServiciosClinicos']);
@@ -144,6 +192,12 @@ Router::post('/alterProdInterno', [ProductoController::class, 'modificarProducto
 // MODIFICAR PRODUCTO EXISTENTE
 Router::post('/alterProdInternoExistente', [ProductoController::class, 'modificarDataProductoInterno']);
 
+// mostrar proveedore 
+Router::get('/proveedores', [ProveedorController::class, 'proveedores']);
+
+// mostrar categorias 
+Router::get('/categorias', [ProductoController::class, 'mostrarCategorias']);
+
 Router::post('/GenerarConsultas',[GenerarConsultasController::class, 'GenerarConsultas']);
 Router::post('/GenerarConsultasCliente',[GenerarConsultasController::class, 'GenerarConsultasCliente']);
 Router::post('/GenerarConsultasFecha',[GenerarConsultasController::class, 'GenerarConsultasFecha']);
@@ -152,6 +206,9 @@ Router::post('/RegistroConsulta',[GenerarConsultasController::class, 'RegistroCo
 
 
 
+
+Router::get('/total_citas', [MostrarProductosController::class, 'cantidad_citas']);
+Router::get('/total_ventas', [MostrarProductosController::class, 'cantidad_ventas']);
 
 
 
