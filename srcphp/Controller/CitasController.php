@@ -1,108 +1,111 @@
 <?php
+
 namespace proyecto\Controller;
+
 use proyecto\models\Table;
 use proyecto\Response\Success;
 use proyecto\Models\Citas;
 use proyecto\Models\citas_tservicios;
 use proyecto\Response\Failure;
 
-
 class citasController {
     function mostrarCitasPendientes() {
         $t = Table::query("SELECT id, fecha_cita, motivo
-        FROM citas
-        WHERE estatus = 'pendiente'
-        LIMIT 5;        
-    ");
-    $r = new Success($t);
-    $json_response = json_encode($r);
+            FROM citas
+            WHERE estatus = 'pendiente'
+            LIMIT 5;");
+        $r = new Success($t);
+        $json_response = json_encode($r);
 
-    header('Content-Type: application/json');
-    echo $json_response;
-
+        header('Content-Type: application/json');
+        echo $json_response;
     }
 
-    function agendarcita(){
+    function agendarcita() {
         try {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
-    
+
             $cita = new Citas();
-            $cita->fecha_registro = date('Y-m-d H:i:s');        
+            $cita->fecha_registro = date('Y-m-d H:i:s');
             $cita->fecha_cita = $dataObject->fechaCita;
             $cita->id_mascota = $dataObject->id_mascota;
             $cita->estatus = $dataObject->estatus;
             $cita->motivo = $dataObject->motivo;
             $cita->save();
 
-            foreach( $dataObject->servicios as $item){
+            foreach ($dataObject->servicios as $item) {
                 $cs = new citas_tservicios;
-                $cs -> cita = $cita -> id;
-                $cs -> tipo_servicio = $item;
-                $cs -> save();
+                $cs->cita = $cita->id;
+                $cs->tipo_servicio = $item;
+                $cs->save();
             }
-    
+
             $r = new Success($cita);
             return $r->Send();
         } catch (\Exception $e) {
             $r = new Failure(401, $e->getMessage());
+            return $r->Send();
         }
     }
 
-    function MascotasUsuario () {
-
-        try{
-
+    function MascotasUsuario() {
+        try {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
-            
+
             $resultados = Table::query("CALL MascotasUsuario ('{$dataObject->id_cliente}') ");
 
             $r = new Success($resultados);
             return $r->Send();
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             $r = new Failure(401, $e->getMessage());
             return $r->Send();
         }
     }
 
-
-    function ServiciosClinicos () {
-
-        try{
-
+    function ServiciosClinicos() {
+        try {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
-            
-            $resultados = Table::query("SELECT * FROM ServiciosClinicos;) ");
+
+            $resultados = Table::query("SELECT * FROM ServiciosClinicos; ");
 
             $r = new Success($resultados);
             return $r->Send();
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             $r = new Failure(401, $e->getMessage());
             return $r->Send();
         }
     }
 
-    function ServiciosEsteticos () {
-
-        try{
-
+    function ServiciosEsteticos() {
+        try {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
-            
-            $resultados = Table::query("SELECT * FROM ServiciosEsteticos;) ");
+
+            $resultados = Table::query("SELECT * FROM ServiciosEsteticos; ");
 
             $r = new Success($resultados);
             return $r->Send();
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             $r = new Failure(401, $e->getMessage());
             return $r->Send();
         }
     }
 
+    function CitasPendientesCliente() {
+        try {
+            $JSONData = file_get_contents("php://input");
+            $dataObject = json_decode($JSONData);
+
+            $resultados = Table::query(" CALL CitasPendientesCliente ('{$dataObject->id_cliente}') ");
+
+            $r = new Success($resultados);
+            return $r->Send();
+        } catch (\Exception $e) {
+            $r = new Failure(401, $e->getMessage());
+            return $r->Send();
+        }
+    }
 }
-
-
-
-

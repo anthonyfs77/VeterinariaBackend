@@ -37,7 +37,7 @@ class ProveedorController {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
             
-            $resultados = Table::query("SELECT * FROM VistaProveedores;");
+            $resultados = Table::query("SELECT * FROM vistatablaproveedores;");
     
             $r = new Success($resultados);
             return $r->Send();

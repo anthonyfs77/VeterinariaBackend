@@ -31,7 +31,7 @@ class ReportesController {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
             
-            $resultados = Table::query("CALL HistorialMedicoCliete ('{$dataObject->nombreMascota}','{$dataObject->nombres}','{$dataObject->apellidos}') ");
+            $resultados = Table::query("CALL HistorialMedicoCliente ('{$dataObject->nombreMascota}','{$dataObject->nombres}','{$dataObject->apellidos}') ");
 
             $r = new Success($resultados);
             return $r->Send();
