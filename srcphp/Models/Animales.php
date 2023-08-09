@@ -14,7 +14,6 @@ class Animales extends Models
     public $genero = "";
 
     protected $filleable = [
-        "id",
         "nombre",
         "propietario",
         "especie",

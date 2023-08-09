@@ -6,16 +6,14 @@ use PDO;
 class Detalle_Consultas extends Models
 {
     public $id_consulta = "";
-    public $id_producto = "";
-    public $dosis = "";
-    public $cantidad = "";
+    public $id_tservicio = "";
+
     
 
     protected $filleable = [
         "id_consulta",
-        "id_producto",
-        "dosis",
-        "cantidad"
+        "id_tservicio",
+
 
     ];
 

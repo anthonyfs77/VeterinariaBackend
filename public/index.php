@@ -16,7 +16,9 @@ use proyecto\Controller\ProductoController;
 use proyecto\Controller\GenerarConsultasController;
 use proyecto\Controller\MascotasController;
 use proyecto\Controller\ReportesController;
+use proyecto\Controller\HistorialMedicoController;
 use proyecto\Controller\TiposServiciosController;
+use proyecto\Controller\RegisterController;
 
 
 Router::headers();
@@ -30,6 +32,10 @@ Router::get("/pru", function(){
 });
 
 
+Router::post('/signin',[RegisterController::class, 'signin']);
+
+Router::post('/HistorialMedicoIDFecha',[HistorialMedicoController::class, 'HistorialMedicoIDFecha']);
+Router::post('/HistorialIDMascota',[HistorialMedicoController::class, 'HistorialIDMascota']);
 
 Router::post('/historialMedico', [ReportesController::class, 'historialMedico']);
 Router::post('/historialMedicoCliente',[ReportesController::class, 'historialMedicoCliente']);
@@ -51,7 +57,7 @@ Router::post('/registrarProveedor',[ProveedorController::class, 'registrarProvee
 
 Router::post('/TablaProveedor',[ProveedorController::class, 'TablaProveedor']);
 
-Router::post('/especie', [MascotasController::class, 'especie']);
+
 Router::post('/registrarMascota', [MascotasController::class, 'registrarMascota']);
 
 // Ruta de registro de clientes [Pantalla Registro]
@@ -169,6 +175,7 @@ Router::post('/agendarcita', [citasController::class, 'agendarcita']);
 Router::post('/MascotasUsuario', [citasController::class, 'MascotasUsuario']);
 Router::post('/ServiciosClinicos', [citasController::class, 'ServiciosClinicos']);
 Router::post('/ServiciosEsteticos', [citasController::class, 'ServiciosEsteticos']);
+Router::post('/CitasPendientesCliente', [citasController::class, 'CitasPendientesCliente']);
 
 // AGREGAR PRODUCTO 
 Router::post('/agregarProducto', [ProductoController::class, 'AgregarProductoPublico']);
