@@ -104,70 +104,47 @@ class citasController {
     }
 
     // generar cliente, mascota y cita
-    function CrearRegistroVeterinario() {
-        try {
-            $JSONData = file_get_contents("php://input");
-            $dataObject = json_decode($JSONData);
-            
-            $entities = [
-                'cliente' => [
-                    'model' => new Clientes(),
-                    'data' => [
-                        'nombre' => $dataObject->nombre,
-                        'apellido' => $dataObject->apellido,
-                        'telefono1' => $dataObject->telefono1,
-                        'telefono2' => $dataObject->telefono2
-                    ],
-                    'error_message' => "Hubo un error al crear el cliente."
-                ],
-                'animal' => [
-                    'model' => new Animales(),
-                    'data' => [
-                        'nombre' => $dataObject->nombre_animal,
-                        'propietario' => $dataObject->cliente->id,
-                        'especie' => $dataObject->especie,
-                        'raza' => $dataObject->raza,
-                        'genero' => $dataObject->genero
-                    ],
-                    'error_message' => "Hubo un error al registrar el animal."
-                ],
-                'cita' => [
-                    'model' => new Citas(),
-                    'data' => [
-                        'fecha_registro' => date('Y-m-d H:i:s'),
-                        'fecha_cita' => $dataObject->fecha_cita,
-                        'id_mascota' => $dataObject->animal->id,
-                        'estatus' => $dataObject->estatus,
-                        'motivo' => $dataObject->motivo
-                    ],
-                    'error_message' => "Hubo un error al programar la cita."
-                ]
-            ];
-            
-            $results = [];
-            foreach ($entities as $key => $entity) {
-                foreach ($entity['data'] as $prop => $val) {
-                    $entity['model']->$prop = $val;
+        function CrearRegistroVeterinario() {
+            try {
+                $JSONData = file_get_contents("php://input");
+                $dataObject = json_decode($JSONData);
+                
+                // Preparar los parámetros
+                $params = [
+                    'nombre' => $dataObject->nombre,
+                    'apellido' => $dataObject->apellido,
+                    'telefono1' => $dataObject->telefono1,
+                    'telefono2' => $dataObject->telefono2,
+                    'nombre_animal' => $dataObject->nombre_animal,
+                    'especie' => $dataObject->especie,
+                    'raza' => $dataObject->raza,
+                    'genero' => $dataObject->genero,
+                    'fecha_cita' => $dataObject->fecha_cita,
+                    'estatus' => $dataObject->estatus,
+                    'motivo' => $dataObject->motivo
+                ];
+                
+                // Llamada al procedimiento almacenado
+                $resultados = Table::queryParams("CALL CrearRegistroVeterinario(:nombre, :apellido, :telefono1, :telefono2, :nombre_animal, :especie, :raza, :genero, :fecha_cita, :estatus, :motivo, @cliente_id, @animal_id, @cita_id)", $params);
+                
+                // Recuperar las IDs
+                $ids = Table::queryParams("SELECT @cliente_id as clienteId, @animal_id as animalId, @cita_id as citaId");
+                
+                if($ids) {
+                    $resultados['ids'] = $ids[0];
+                } else {
+                    throw new \Exception("Error al obtener las IDs después de insertar.");
                 }
-                $entity['model']->save();
-                if (!$entity['model'] || !isset($entity['model']->id)) {
-                    $r = new Failure(400, $entity['error_message']);
-                    return $r->send();
-                }
-                $results[$key] = $entity['model'];
+                
+                $r = new Success("Datos registrados exitosamente.", $resultados);
+                return $r->send();
+                
+            } catch (\Exception $e) {
+                $r = new Failure(500, $e->getMessage());
+                return $r->send();
             }
-    
-            $r = new Success("Datos registrados exitosamente.", $results);
-            return $r->send();
-            
-        } catch (\Exception $e) {
-            $r = new Failure(500, $e->getMessage());
-            return $r->send();
         }
-    }
     
-    
-
 }
 
 
