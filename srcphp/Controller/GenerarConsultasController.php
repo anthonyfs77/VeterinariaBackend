@@ -21,7 +21,7 @@ class GenerarConsultasController{
         
           $Consulta = new Consultas();
           $Consulta->id_cita = $dataObject->id_cita;
-          $Consulta->observaciones_medicas = $dataObject->observaciones; 
+          $Consulta->observaciones = $dataObject->observaciones;
           $Consulta->peso_kg = $dataObject->peso; 
           $Consulta->altura_mts = $dataObject->altura;
           $Consulta->edad_meses = $dataObject->edad; 
@@ -30,9 +30,7 @@ class GenerarConsultasController{
           foreach($dataObject->id_productosInternos as $item){
             $dc =new Detalle_Consultas();
             $dc-> id_consulta = $Consulta -> id;
-            $dc-> id_producto = $item ->id;
-            $dc-> dosis = $item -> Dosis;
-            $dc-> cantidad = $item -> Cantidad;
+            $dc-> id_tservicio = $item;
             $dc -> save();
           }
            

@@ -29,6 +29,7 @@ class MascotasController {
             return $r->Send();
         } catch (\Exception $e) {
             $r = new Failure(401, $e->getMessage());
+            return $r->Send();
         }
     }
 
@@ -45,24 +46,6 @@ function registrarMascotaInsert () {
     } catch (\Exception $e) {
         $r = new Failure(401, $e->getMessage());
     }
-}
-
-function especie () {
-
-    try{
-
-        $JSONData = file_get_contents("php://input");
-        $dataObject = json_decode($JSONData);
-        
-        $resultados = Table::query("SELECT * FROM ObtenerEspecie;");
-
-        $r = new Success($resultados);
-        return $r->Send();
-    }catch (\Exception $e) {
-        $r = new Failure(401, $e->getMessage());
-        return $r->Send();
-    }
-
 }
 
 }

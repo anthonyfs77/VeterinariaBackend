@@ -18,6 +18,7 @@ use proyecto\Controller\MascotasController;
 use proyecto\Controller\ReportesController;
 use proyecto\Controller\HistorialMedicoController;
 use proyecto\Controller\TiposServiciosController;
+use proyecto\Controller\RegisterController;
 
 
 Router::headers();
@@ -30,6 +31,8 @@ Router::get("/pru", function(){
     $r->Send();
 });
 
+
+Router::post('/signin',[RegisterController::class, 'signin']);
 
 Router::post('/HistorialMedicoIDFecha',[HistorialMedicoController::class, 'HistorialMedicoIDFecha']);
 Router::post('/HistorialIDMascota',[HistorialMedicoController::class, 'HistorialIDMascota']);
@@ -54,7 +57,7 @@ Router::post('/registrarProveedor',[ProveedorController::class, 'registrarProvee
 
 Router::post('/TablaProveedor',[ProveedorController::class, 'TablaProveedor']);
 
-Router::post('/especie', [MascotasController::class, 'especie']);
+
 Router::post('/registrarMascota', [MascotasController::class, 'registrarMascota']);
 
 // Ruta de registro de clientes [Pantalla Registro]

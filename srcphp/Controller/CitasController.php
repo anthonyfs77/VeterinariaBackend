@@ -2,12 +2,12 @@
 
 namespace proyecto\Controller;
 
+use proyecto\Models\Models;
 use proyecto\models\Table;
 use proyecto\Response\Success;
 use proyecto\Models\Citas;
 use proyecto\Models\Animales;
 use proyecto\Models\Clientes;
-use proyecto\Models\citas_tservicios;
 use proyecto\Response\Failure;
 
 class citasController {
@@ -45,13 +45,6 @@ class citasController {
             $cita->estatus = $dataObject->estatus;
             $cita->motivo = $dataObject->motivo;
             $cita->save();
-
-            foreach ($dataObject->servicios as $item) {
-                $cs = new citas_tservicios;
-                $cs->cita = $cita->id;
-                $cs->tipo_servicio = $item;
-                $cs->save();
-            }
 
             $r = new Success($cita);
             return $r->Send();
