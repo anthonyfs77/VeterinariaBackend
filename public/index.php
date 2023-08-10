@@ -32,6 +32,9 @@ Router::get("/pru", function(){
 });
 
 
+Router::post('/auth', [RegisterController::class, 'auth']);
+
+
 Router::post('/signin',[RegisterController::class, 'signin']);
 
 Router::post('/HistorialMedicoIDFecha',[HistorialMedicoController::class, 'HistorialMedicoIDFecha']);
