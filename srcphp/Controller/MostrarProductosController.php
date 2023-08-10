@@ -121,6 +121,7 @@ class MostrarProductosController
         }
     }
 
+    ////////////////////////////////////////////////////////////////
     function rangoPreciosQuery($minPrice, $maxPrice)
     {
         $t = table::queryParams("CALL obtener_productos_internos_por_precio(:minPrice,:maxPrice);

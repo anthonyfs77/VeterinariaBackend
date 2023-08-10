@@ -1,0 +1,5 @@
+SELECT *
+        from productos
+        where existencias < 5
+
+        select * from productos;
