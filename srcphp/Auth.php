@@ -1,9 +1,27 @@
 <?php
     
     namespace proyecto;
+    use Firebase\JWT\JWT;
+    use Firebase\JWT\Key;
+    use Carbon\Carbon;
+    use proyecto\Models\Usuarios;
+
+
     class Auth
     {
-        private    $user;
+        private $Usuarios;
+
+        public static function generateToken($data, $time = 3600): string
+        {
+            $t = Carbon::now()->timestamp + $time;
+            $key = 'osnola4321';
+            $payload = ['exp' => $t, 'data' => $data];
+            return JWT::encode($payload, $key, 'HS256');
+        }
+
+
+
+
         /**
          * @return mixed
          */

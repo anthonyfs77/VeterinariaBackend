@@ -262,6 +262,17 @@ class MostrarProductosController
     }
 
 
+    function TablaProductos () {
+        try {
+            $resultados = Table::query("SELECT * FROM ViewProductos;");
+    
+            $r = new Success($resultados);
+            return $r->Send();
+        } catch (\Exception $e) {
+            $r = new Failure(401, $e->getMessage());
+            return $r->Send();
+        }
+    }
 
     
     function cantidad_ventas(){

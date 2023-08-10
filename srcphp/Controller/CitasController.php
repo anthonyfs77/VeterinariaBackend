@@ -2,10 +2,12 @@
 
 namespace proyecto\Controller;
 
+use proyecto\Models\Models;
 use proyecto\models\Table;
 use proyecto\Response\Success;
 use proyecto\Models\Citas;
-use proyecto\Models\citas_tservicios;
+use proyecto\Models\Animales;
+use proyecto\Models\Clientes;
 use proyecto\Response\Failure;
 
 
@@ -25,7 +27,7 @@ class citasController
         echo $json_response;
     }
 
-function agendarcita() {
+    function agendarcita() {
         try {
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
@@ -46,11 +48,8 @@ function agendarcita() {
         }
     }
 
-    function MascotasUsuario()
-    {
-
+    function MascotasUsuario() {
         try {
-
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
 
@@ -64,16 +63,12 @@ function agendarcita() {
         }
     }
 
-
-    function ServiciosClinicos()
-    {
-
+    function ServiciosClinicos() {
         try {
-
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
 
-            $resultados = Table::query("SELECT * FROM ServiciosClinicos;) ");
+            $resultados = Table::query("SELECT * FROM ServiciosClinicos; ");
 
             $r = new Success($resultados);
             return $r->Send();
@@ -83,15 +78,12 @@ function agendarcita() {
         }
     }
 
-    function ServiciosEsteticos()
-    {
-
+    function ServiciosEsteticos() {
         try {
-
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
 
-            $resultados = Table::query("SELECT * FROM ServiciosEsteticos;) ");
+            $resultados = Table::query("SELECT * FROM ServiciosEsteticos; ");
 
             $r = new Success($resultados);
             return $r->Send();

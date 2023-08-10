@@ -1,6 +1,8 @@
 <?php
 
 namespace proyecto\Models;
+use proyecto\Auth;
+use PDO;
 
 class Citas extends Models
 {
@@ -13,6 +15,7 @@ class Citas extends Models
 
     protected $filleable = [
 
+        "id",
         "fecha_registro",
         "fecha_cita",
         "id_mascota",

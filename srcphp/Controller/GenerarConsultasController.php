@@ -21,18 +21,16 @@ class GenerarConsultasController{
         
           $Consulta = new Consultas();
           $Consulta->id_cita = $dataObject->id_cita;
-          $Consulta->observaciones_medicas = $dataObject->observaciones; 
+          $Consulta->observaciones = $dataObject->observaciones;
           $Consulta->peso_kg = $dataObject->peso; 
           $Consulta->altura_mts = $dataObject->altura;
           $Consulta->edad_meses = $dataObject->edad; 
           $Consulta->save();
 
-          foreach($dataObject->id_productosInternos as $item){
+          foreach($dataObject->servicios_id as $item){
             $dc =new Detalle_Consultas();
-            $dc-> id_consulta = $Consulta -> id;
-            $dc-> id_producto = $item ->id;
-            $dc-> dosis = $item -> Dosis;
-            $dc-> cantidad = $item -> Cantidad;
+            $dc-> consulta_id = $Consulta -> id;
+            $dc-> tservicios_id = $item;
             $dc -> save();
           }
            
@@ -95,17 +93,18 @@ class GenerarConsultasController{
         }
     }
 
-    function BuscarMedicamentos (){
-        try{
 
+    function TServicios (){
+        try {
+            
             $JSONData = file_get_contents("php://input");
             $dataObject = json_decode($JSONData);
             
-            $resultados = Table::query("SELECT * FROM BuscarMedicamentos ");
+            $resultados = Table::query("SELECT * FROM TServicios ");
 
             $r = new Success($resultados);
             return $r->Send();
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             $r = new Failure(401, $e->getMessage());
             return $r->Send();
         }
