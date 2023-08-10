@@ -5,14 +5,14 @@ use PDO;
 
 class Detalle_Consultas extends Models
 {
-    public $id_consulta = "";
-    public $id_tservicio = "";
+    public $consulta_id = "";
+    public $tservicios_id = "";
 
     
 
     protected $filleable = [
-        "id_consulta",
-        "id_tservicio",
+        "consulta_id",
+        "tservicios_id",
 
 
     ];

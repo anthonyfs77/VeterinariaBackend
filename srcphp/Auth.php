@@ -4,12 +4,12 @@
     use Firebase\JWT\JWT;
     use Firebase\JWT\Key;
     use Carbon\Carbon;
-    use proyecto\Models\Clientes.php;
+    use proyecto\Models\Usuarios;
 
 
     class Auth
     {
-        private $Clientes;
+        private $Usuarios;
 
         public static function generateToken($data, $time = 3600): string
         {

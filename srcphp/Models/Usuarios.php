@@ -10,7 +10,9 @@ public $apellido = "";
 public $correo = "";
 public $telefono1 = "";
 public $telefono2 = "";
-public $contraseña = "";
+public $contra = "";
+
+public $tipo_usuario = "";
 
 
 protected $filleable = [
@@ -20,7 +22,8 @@ protected $filleable = [
 "correo",
 "telefono1",
 "telefono2",
-"contraseña"
+"contra",
+"tipo_usuario"
 
 ];
 

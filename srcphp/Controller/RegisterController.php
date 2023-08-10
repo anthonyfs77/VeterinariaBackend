@@ -35,12 +35,13 @@ class RegisterController {
 
             $c = new Usuarios();
 
-            $c->nombre = $dataObject->nombre;
-            $c->apellido = $dataObject->last;
+            $c->nombre = $dataObject->nombres;
+            $c->apellido = $dataObject->apellidos;
             $c->correo = $dataObject->correo;
             $c->telefono1 = $dataObject->tel1;
             $c->telefono2 = $dataObject->tel2;
-            $c->contraseña = $dataObject->contrasena;
+            $c->contra = $dataObject->password;
+            $c->tipo_usuario = $dataObject->ts;
 
             $c -> save();
             $r = new Success($c);

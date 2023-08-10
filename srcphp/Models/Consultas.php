@@ -16,6 +16,7 @@ class Consultas extends Models
 
    
     protected $filleable = [
+        "id",
         "id_cita",
         "observaciones",
         "peso_kg",

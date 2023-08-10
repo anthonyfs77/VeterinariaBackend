@@ -206,9 +206,7 @@ Router::post('/GenerarConsultasCliente',[GenerarConsultasController::class, 'Gen
 Router::post('/GenerarConsultasFecha',[GenerarConsultasController::class, 'GenerarConsultasFecha']);
 Router::post('/BuscarMedicamentos',[GenerarConsultasController::class, 'BuscarMedicamentos']);
 Router::post('/RegistroConsulta',[GenerarConsultasController::class, 'RegistroConsulta']);
-
-
-
+Router::post('/TServicios',[GenerarConsultasController::class, 'TServicios']);
 
 Router::get('/total_citas', [MostrarProductosController::class, 'cantidad_citas']);
 Router::get('/total_ventas', [MostrarProductosController::class, 'cantidad_ventas']);
