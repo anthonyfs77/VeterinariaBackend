@@ -1,0 +1,452 @@
+-- MySQL Workbench Forward Engineering
+drop database if exists BDveterinaria;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema BDveterinaria
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema BDveterinaria
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `BDveterinaria` DEFAULT CHARACTER SET utf8mb4 ;
+USE `BDveterinaria` ;
+
+-- -----------------------------------------------------
+-- Table `BDveterinaria2`.`usuarios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `BDveterinaria`.`usuarios` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(30) NOT NULL,
+  `apellido` VARCHAR(15) NOT NULL,
+  `correo` VARCHAR(50) NULL ,
+  `telefono1` VARCHAR(20) NOT NULL,
+  `telefono2` VARCHAR(20) NULL ,
+  `contra` VARCHAR(250) Null,
+  `tipo_usuario` ENUM('Administrador','Cliente') DEFAULT 'Cliente',
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8mb4;
+
+-- -----------------------------------------------------
+-- Table `BDveterinaria`.`animales`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `BDveterinaria`.`animales` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(50) NOT NULL,
+  `propietario` INT(11) NOT NULL,
+  `especie` varchar (30) NOT NULL,
+  `raza` VARCHAR(50) NULL ,
+  `genero` ENUM('Macho', 'Hembra') NULL ,
+  PRIMARY KEY (`id`),
+  INDEX `propietario` (`propietario` ASC) ,
+  INDEX `especie` (`especie` ASC) ,
+  CONSTRAINT `animales_ibfk_1`
+    FOREIGN KEY (`propietario`)
+    REFERENCES `BDveterinaria`.`usuarios` (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `BDveterinaria`.`categorias`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `BDveterinaria`.`categorias` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `categoria` ENUM('Transportadoras', 'Pecheras', 'Accesorios', 'Jugeteria', 'Alimentos', 'Medicamentos', 'Articulos de aseo') NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `BDveterinaria`.`citas`
+-- -----------------------------------------------------
+CREATE TABLE citas (
+id INT PRIMARY KEY auto_increment,
+user_regis INT,
+fecha_registro DATETIME,
+ fecha_cita DATETIME,
+ id_mascota INT,
+ estatus enum('Aceptada','Rechazada','Pendiente','Realizada'),
+ motivo varchar(500),
+ FOREIGN KEY (id_mascota) REFERENCES animales(id),
+ FOREIGN KEY (user_regis) REFERENCES usuarios(id)
+);
+
+-- -----------------------------------------------------
+-- Table `BDveterinaria`.`productos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `BDveterinaria`.`productos` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nom_producto` VARCHAR(50) NOT NULL,
+  `descripcion` VARCHAR(200) NULL ,
+  `precio_compra` DECIMAL(10,2),
+  `tipo_producto` ENUM('venta', 'interno') NOT NULL,
+  `existencias` INT(11) NOT NULL,
+  `precio_venta` DECIMAL(10,2)  NULL,
+  `id_categoria` INT(11) NOT NULL,
+  `imagen` LONGBLOB  NULL default null,
+  PRIMARY KEY (`id`),
+  INDEX `id_categoria` (`id_categoria` ASC) ,
+  CONSTRAINT `productos_ibfk_1`
+    FOREIGN KEY (`id_categoria`)
+    REFERENCES `BDveterinaria`.`categorias` (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `BDveterinaria`.`servicios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `BDveterinaria`.`servicios` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `servicios` ENUM('Clinico', 'Estetico') NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `BDveterinaria`.`tipos_servicios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `BDveterinaria`.`tipos_servicios` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre_TServicio` VARCHAR(150) NULL DEFAULT NULL,
+  `id_servicio` INT(11) NULL DEFAULT NULL,
+  `descripcion` VARCHAR(100) NULL DEFAULT NULL,
+  `precio` DECIMAL(10,2) null default null,
+  `estado` enum ('publico','no publico'),
+  PRIMARY KEY (`id`),
+  INDEX `id_servicio` (`id_servicio` ASC) ,
+  CONSTRAINT `tipos_servicios_ibfk_1`
+    FOREIGN KEY (`id_servicio`)
+    REFERENCES `BDveterinaria`.`servicios` (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8mb4;
+
+-- -----------------------------------------------------
+-- Table `BDveterinaria`.`consultas`
+-- -----------------------------------------------------
+CREATE TABLE consultas (
+id INT primary key auto_increment,
+id_cita INT,
+observaciones VARCHAR (500),
+peso_kg decimal(10, 2),
+altura_mts decimal(10, 2),
+edad_meses INT,
+FOREIGN KEY (id_cita) REFERENCES citas(id)
+);
+
+-- -----------------------------------------------------
+-- Table `BDveterinaria`.`detalle_consultas`
+-- -----------------------------------------------------
+CREATE TABLE detalle_consultas(
+id INT primary key auto_increment,
+id_consulta INT,
+id_tservicios INT,
+FOREIGN KEY (id_consulta) REFERENCES consultas(id),
+FOREIGN KEY (id_tservicios) REFERENCES tipos_servicios(id)
+);
+
+-- -----------------------------------------------------
+-- Table `BDveterinaria`.`ventas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `BDveterinaria`.`ventas` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `fecha` DATE NOT NULL,
+  `tipo_pago` ENUM('transferencia', 'efectivo', 'mixto') NOT NULL,
+  PRIMARY KEY (`id`)
+  )
+ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `BDveterinaria`.`detalle_ventas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `BDveterinaria`.`detalle_ventas` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_venta` INT(11) NULL DEFAULT NULL,
+  `id_producto` INT(11) NULL DEFAULT NULL,
+  `cantidad` INT(11) NOT NULL,
+  `monto_pagado` decimal(10, 2),
+  PRIMARY KEY (`id`),
+  INDEX `id_venta` (`id_venta` ASC) ,
+  INDEX `id_producto` (`id_producto` ASC),
+  CONSTRAINT `detalle_ventas_ibfk_1`
+    FOREIGN KEY (`id_venta`)
+    REFERENCES `BDveterinaria`.`ventas` (`id`),
+  CONSTRAINT `detalle_ventas_ibfk_2`
+    FOREIGN KEY (`id_producto`)
+    REFERENCES `BDveterinaria`.`productos` (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `BDveterinaria`.`servicios_productos` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_servicio` INT(11) NOT NULL,
+  `id_producto` INT(11) NOT NULL,
+  `cantidad` INT(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_servicio_idx` (`id_servicio` ASC),
+  INDEX `fk_producto_idx` (`id_producto` ASC),
+  CONSTRAINT `fk_servicio`
+    FOREIGN KEY (`id_servicio`)
+    REFERENCES `BDveterinaria`.`tipos_servicios` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_producto`
+    FOREIGN KEY (`id_producto`)
+    REFERENCES `BDveterinaria`.`productos` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4;
+
+CREATE VIEW clientes AS
+SELECT * FROM usuarios;
+
+-- Usuarios
+INSERT INTO `BDveterinaria`.`usuarios`
+(nombre, apellido, correo, telefono1, telefono2, contra, tipo_usuario) 
+VALUES 
+('Roberto', 'Martínez', 'roberto@cliente.com', '1234567890', '1122334455', 'password1', 'Administrador'),
+('María', 'Hernández', 'maria@cliente.com', '0987654321', '2233445566', 'password2', 'Cliente'),
+('Luis', 'García', 'luis@cliente.com', '2345678901', '3344556677', 'password3', 'Cliente'),
+('Gabriela', 'Fernández', 'gabriela@cliente.com', '3456789012', '4455667788', 'password4', 'Cliente'),
+('Sergio', 'Rodríguez', 'sergio@cliente.com', '4567890123', '5566778899', 'password5', 'Cliente'),
+('Rosa', 'Romero', 'rosa@cliente.com', '5678901234', '6677889900', 'password6', 'Cliente'),
+('Daniel', 'Morales', 'daniel@cliente.com', '6789012345', '7788990011', 'password7', 'Cliente'),
+('Elena', 'Alvarez', 'elena@cliente.com', '7890123456', '8899001122', 'password8', 'Cliente'),
+('Alejandro', 'Cruz', 'alejandro@cliente.com', '8901234567', '9900112233', 'password9', 'Cliente'),
+('Isabel', 'Ortega', 'isabel@cliente.com', '9012345678', '0011223344', 'password10', 'Cliente'),
+('Fernando', 'Ruíz', 'fernando@cliente.com', '0123456789', '1122334455', 'password11', 'Cliente'),
+('Laura', 'Gómez', 'laura@cliente.com', '1234567890', '2233445566', 'password12', 'Cliente'),
+('José', 'Reyes', 'jose@cliente.com', '2345678901', '3344556677', 'password13', 'Cliente'),
+('Patricia', 'Guerrero', 'patricia@cliente.com', '3456789012', '4455667788', 'password14', 'Cliente'),
+('Diego', 'Mendoza', 'diego@cliente.com', '4567890123', '5566778899', 'password15', 'Cliente');
+
+-- Animales
+INSERT INTO `BDveterinaria`.`animales`
+(nombre, propietario, especie, raza, genero) 
+VALUES 
+('Rocky', 3, 'Perro', 'Doberman', 'Macho'),
+('Princesa', 4, 'Gato', 'Persa', 'Hembra'),
+('Rufus', 5, 'Perro', 'Bulldog', 'Macho'),
+('Sasha', 6, 'Gato', 'Maine Coon', 'Hembra'),
+('Buddy', 7, 'Perro', 'Pug', 'Macho'),
+('Kitty', 8, 'Gato', 'Ragdoll', 'Hembra'),
+('Lucas', 9, 'Perro', 'Labrador', 'Macho'),
+('Molly', 10, 'Gato', 'Bengalí', 'Hembra'),
+('Jack', 11, 'Perro', 'Rottweiler', 'Macho'),
+('Luna', 12, 'Gato', 'Esphynx', 'Hembra'),
+('Charlie', 13, 'Perro', 'Chihuahua', 'Macho'),
+('Chloe', 14, 'Gato', 'British Shorthair', 'Hembra'),
+('Max', 15, 'Perro', 'Beagle', 'Macho'),
+('Nala', 14, 'Gato', 'Scottish Fold', 'Hembra'),
+('Leo', 13, 'Perro', 'German Shepherd', 'Macho');
+
+
+
+-- Productos
+INSERT INTO `BDveterinaria`.`productos`
+(nom_producto, descripcion, precio_compra, tipo_producto, existencias, precio_venta, id_categoria) 
+VALUES 
+('Pulguicida', 'Tratamiento contra pulgas', 40, 'venta', 150, 60, 6),
+('Desparasitante', 'Tratamiento interno contra parásitos', 45, 'interno', 90, 100, 6),
+('Transportadora Grande', 'Transportadora para animales de gran tamaño', 300, 'venta', 50, 400, 1),
+('Collar antipulgas', 'Collar con tratamiento antipulgas', 60, 'venta', 200, 85, 3),
+('Juguete para gatos', 'Pelota con cascabel', 15, 'venta', 250, 25, 4),
+('Alimento para perros', 'Alimento seco premium', 100, 'venta', 500, 130, 5),
+('Shampoo hidratante', 'Shampoo para piel seca', 55, 'venta', 110, 75, 7),
+('Vitaminas', 'Suplemento vitamínico', 40, 'interno', 90, 70, 6),
+('Juguete para perros', 'Mordedera resistente', 20, 'venta', 300, 35, 4),
+('Collar', 'Collar de nylon ajustable', 30, 'venta', 150, 45, 3),
+('Alimento para gatos', 'Alimento seco premium', 95, 'venta', 400, 120, 5),
+('Pipeta antipulgas', 'Tratamiento tópico antipulgas', 60, 'interno', 100, 85, 6),
+('Transportadora Mediana', 'Transportadora para animales medianos', 250, 'venta', 80, 350, 1),
+('Correa', 'Correa resistente para paseo', 25, 'venta', 200, 40, 3),
+('Shampoo anticaspa', 'Shampoo especializado', 60, 'venta', 90, 80, 7);
+
+-- servicios
+INSERT INTO `BDveterinaria`.`servicios`
+(servicios) 
+VALUES 
+('clinico'),
+('estetico');
+
+
+-- Tipos de Servicios
+INSERT INTO `BDveterinaria`.`tipos_servicios`
+(nombre_TServicio, id_servicio, descripcion, precio, estado) 
+VALUES 
+('Vacunación', 1, 'Servicio de vacunación para animales', 400, 'publico'),
+('Corte de uñas', 2, 'Corte de uñas para mascotas', 100, 'publico'),
+('Baño', 1, 'Baño y limpieza para animales', 300, 'publico'),
+('Estilizado', 2, 'Corte de pelo y estilizado para mascotas', 500, 'publico'),
+('Consulta médica', 1, 'Revisión y diagnóstico por veterinario', 450, 'publico'),
+('Desparasitación', 2, 'Aplicación de tratamiento desparasitante', 250, 'publico'),
+('Hospitalización', 1, 'Servicio de hospitalización y cuidado', 700, 'no publico'),
+('Radiografía', 2, 'Radiografía y diagnóstico de imágenes', 550, 'no publico'),
+('Cirugía menor', 1, 'Procedimientos quirúrgicos menores', 1200, 'no publico'),
+('Cirugía mayor', 2, 'Procedimientos quirúrgicos mayores', 2500, 'no publico'),
+('Laboratorio', 1, 'Análisis clínicos y de laboratorio', 350, 'publico'),
+('Terapia física', 2, 'Rehabilitación y terapia física para mascotas', 800, 'no publico'),
+('Acupuntura', 1, 'Tratamiento alternativo de acupuntura', 600, 'publico'),
+('Hotel', 2, 'Hospedaje para mascotas', 150, 'publico');
+
+
+
+-- Categorías
+INSERT INTO `BDveterinaria`.`categorias` (categoria) 
+VALUES 
+('Transportadoras'),
+('Pecheras'),
+('Accesorios'),
+('Jugeteria'),
+('Alimentos'),
+('Medicamentos'),
+('Articulos de aseo');
+
+-- Citas
+INSERT INTO citas (fecha_registro, fecha_cita, user_regis, id_mascota, motivo, estatus) VALUES
+('2023-01-10', '2023-01-15', 3, 1, 'Vacunación', 'Rechazada'),
+('2023-01-11', '2023-01-17', 1, 2, 'Revisión general', 'Pendiente'),
+('2023-01-12', '2023-01-18', 5, 3, 'Desparasitación', 'Aceptada'),
+('2023-01-15', '2023-01-16', 6, 4, 'Vacunación', 'Pendiente'),
+('2023-01-16', '2023-01-25', 7, 5, 'Revisión dental', 'Realizada'),
+('2023-01-17', '2023-01-27', 1, 6, 'Vacunación', 'Realizada'),
+('2023-01-20', '2023-01-29', 9, 7, 'Revisión general', 'Pendiente'),
+('2023-01-21', '2023-01-29', 1, 8, 'Desparasitación', 'Aceptada'),
+('2023-01-22', '2023-01-28', 11, 9, 'un Baño', 'Aceptada'),
+('2023-01-23', '2023-01-28', 12, 10, 'Revisión dental', 'Aceptada'),
+('2023-01-25', '2023-01-29', 13, 11, 'Revisión general', 'Realizada'),
+('2023-01-27', '2023-01-29', 1, 12, 'Desparasitación', 'Realizada'),
+('2023-01-28', '2023-01-28', 15, 13, 'Vacunación', 'Pendiente'),
+('2023-01-29', '2023-01-30', 16, 14, 'Revisión dental', 'Pendiente'),
+('2023-01-30', '2023-02-04', 1, 15, 'Vacunación', 'Aceptada'),
+('2023-02-01', '2023-02-08', 3, 1, 'Revisión general', 'Aceptada'),
+('2023-02-03', '2023-02-10', 4, 2, 'Desparasitación', 'Rechazada'),
+('2023-02-05', '2023-02-11', 1, 3, 'un Baño', 'Pendiente'),
+('2023-02-07', '2023-02-23', 6, 4, 'Revisión dental', 'Aceptada'),
+('2023-02-08', '2023-02-25', 1, 5, 'Revisión general', 'Aceptada');
+
+
+
+-- Consultas
+INSERT INTO `BDveterinaria`.`consultas`
+(id_cita, observaciones, peso_kg, altura_mts, edad_meses) 
+VALUES 
+(1, 'El animal se mostró tranquilo.', 20, 0.5, 24),
+(2, 'El gato mostró signos de estrés.', 5, 0.3, 12),
+(3, 'El perro estaba emocionado.', 15, 0.4, 18),
+(4, 'El animal necesita una dieta especial.', 25, 0.55, 36),
+(5, 'El perro se mostró apático.', 18, 0.48, 60),
+(6, 'El gato se mostró nervioso y arañó al médico.', 4.5, 0.28, 10),
+(7, 'El perro ladró continuamente durante la consulta.', 22, 0.51, 28),
+(8, 'El animal tiene alergia en la piel.', 16, 0.45, 40),
+(9, 'La mascota requiere vacunas adicionales.', 14, 0.39, 16),
+(10, 'El gato tiene una pequeña herida en la pata.', 3.8, 0.29, 8),
+(11, 'El perro mostró signos de deshidratación.', 19, 0.49, 50),
+(12, 'La mascota se encuentra en perfecto estado.', 17, 0.44, 32),
+(13, 'Se detectó una infección en el oído.', 15.5, 0.43, 20),
+(14, 'El gato requiere un tratamiento antipulgas.', 4, 0.27, 9),
+(15, 'El perro necesita atención especial por su vejez.', 23, 0.52, 72);
+
+-- Detalle Consultas
+INSERT INTO `BDveterinaria`.`detalle_consultas` (id_consulta, id_tservicios) VALUES 
+(1, 5),
+(2, 5),
+(3, 1),
+(4, 6),
+(5, 5),
+(6, 5),
+(7, 5),
+(8, 6),
+(9, 1),
+(10, 5),
+(11, 6),
+(12, 5),
+(13, 5),
+(14, 6),
+(15, 12);
+
+-- Ventas
+INSERT INTO `BDveterinaria`.`ventas` (fecha, tipo_pago) VALUES 
+('2023-08-08', 'efectivo'),
+('2023-08-07', 'transferencia'),
+('2023-08-06', 'mixto'),
+('2023-08-05', 'efectivo'),
+('2023-08-04', 'transferencia'),
+('2023-08-03', 'efectivo'),
+('2023-08-02', 'efectivo'),
+('2023-08-01', 'mixto'),
+('2023-07-31', 'efectivo'),
+('2023-07-30', 'transferencia'),
+('2023-07-29', 'efectivo'),
+('2023-07-28', 'mixto'),
+('2023-07-27', 'efectivo'),
+('2023-07-26', 'transferencia'),
+('2023-07-25', 'mixto');
+
+-- Detalle Ventas
+INSERT INTO `BDveterinaria`.`detalle_ventas` (id_venta, id_producto, cantidad, monto_pagado) VALUES 
+(1, 1, 2, 120.00),
+(1, 5, 1, 25.00),
+(2, 2, 3, 300.00),
+(2, 3, 1, 400.00),
+(3, 4, 1, 85.00),
+(3, 7, 1, 75.00),
+(4, 1, 2, 120.00),
+(4, 6, 1, 130.00),
+(5, 5, 2, 50.00),
+(5, 8, 2, 140.00),
+(6, 2, 1, 100.00),
+(6, 9, 2, 70.00),
+(7, 3, 1, 400.00),
+(7, 10, 1, 45.00),
+(8, 4, 2, 170.00),
+(8, 11, 1, 120.00),
+(9, 5, 3, 75.00),
+(10, 6, 1, 130.00),
+(11, 7, 2, 150.00),
+(12, 8, 1, 70.00),
+(13, 1, 3, 180.00),
+(14, 9, 1, 35.00),
+(15, 10, 2, 90.00);
+
+
+INSERT INTO `BDveterinaria`.`servicios_productos` (id_servicio, id_producto, cantidad) VALUES
+(1, 1, 1),  
+(1, 2, 1),  
+(6, 2, 1),  
+(6, 11, 1),
+(3, 7, 1),  
+(3, 15, 1), 
+(4, 7, 1),  
+(4, 15, 1),
+(5, 8, 1),  
+(7, 6, 3),  
+(7, 11, 2), 
+(10, 6, 2), 
+(10, 11, 1),
+(12, 8, 1), 
+(2, 9, 1),  
+(8, 2, 1),  
+(9, 8, 2),  
+(11, 8, 1), 
+(13, 2, 1), 
+(14, 3, 1);

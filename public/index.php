@@ -193,15 +193,14 @@ Router::post('/GenerarConsultasFecha',[GenerarConsultasController::class, 'Gener
 Router::post('/BuscarMedicamentos',[GenerarConsultasController::class, 'BuscarMedicamentos']);
 Router::post('/RegistroConsulta',[GenerarConsultasController::class, 'RegistroConsulta']);
 
-
-
-
 Router::get('/total_citas', [MostrarProductosController::class, 'cantidad_citas']);
 Router::get('/total_ventas', [MostrarProductosController::class, 'cantidad_ventas']);
 
+Router::get('/citas_total', [citasController::class, 'citasTot']);
+Router::get('/citas_aceptadas', [citasController::class, 'citasAceptadas']);
 
-
-
+Router::post('/citas_id', [citasController::class, 'cita_id']);
+Router::post('/citasResponse', [citasController::class, 'rechazar_aceptar_cita']);
 
 
 
