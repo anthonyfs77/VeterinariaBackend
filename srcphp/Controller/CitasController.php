@@ -13,6 +13,9 @@ use proyecto\Response\Failure;
 
 class citasController
 {
+
+ 
+    
     function mostrarCitasPendientes()
     {
         $t = Table::query("SELECT *

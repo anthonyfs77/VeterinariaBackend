@@ -180,6 +180,20 @@ Router::post('/ServiciosClinicos', [citasController::class, 'ServiciosClinicos']
 Router::post('/ServiciosEsteticos', [citasController::class, 'ServiciosEsteticos']);
 Router::post('/CitasPendientesCliente', [citasController::class, 'CitasPendientesCliente']);
 
+
+
+Router::post('/agregarservicioproduct', [TiposServiciosController::class, 'CrearTipoServicioYProductos']);
+
+Router::get('/serviciospublicos', [TiposServiciosController::class, 'serviciospublicos']);
+Router::get('/serviciosprivados', [TiposServiciosController::class, 'serviciosprivados']);
+Router::get('/serviciospublicosesteticos', [TiposServiciosController::class, 'serviciospublicosesteticos']);
+Router::get('/serviciospublicosclinicos', [TiposServiciosController::class, 'serviciospublicosclinicos']);
+Router::get('/serviciosprivadossesteticos', [TiposServiciosController::class, 'serviciosprivadossesteticos']);
+Router::get('/serviciosprivadosclinicos', [TiposServiciosController::class, 'serviciosprivadosclinicos']);
+
+
+
+
 // AGREGAR PRODUCTO 
 Router::post('/agregarProducto', [ProductoController::class, 'AgregarProductoPublico']);
 
@@ -213,6 +227,11 @@ Router::post('/TServicios',[GenerarConsultasController::class, 'TServicios']);
 
 Router::get('/total_citas', [MostrarProductosController::class, 'cantidad_citas']);
 Router::get('/total_ventas', [MostrarProductosController::class, 'cantidad_ventas']);
+
+Router::post('/productoxcadena', [MostrarProductosController::class, 'productoporcadena']);
+
+Router::post('/productopublicoporcadena', [MostrarProductosController::class, 'productopublicoporcadena']);
+
 
 Router::get('/citas_total', [citasController::class, 'citasTot']);
 Router::get('/citas_aceptadas', [citasController::class, 'citasAceptadas']);
