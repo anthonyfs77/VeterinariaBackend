@@ -1,7 +1,7 @@
 <?php
 
 namespace proyecto\Controller;
-use proyecto\Models\Clientes;
+use proyecto\Models\Usuarios;
 use proyecto\Response\Failure;
 use proyecto\Response\Success;
 use proyecto\models\Table;
@@ -17,7 +17,7 @@ class ClientesController{
     }
 
     // Método para actualizar un cliente
-    function actualizarCliente()
+    function actualizarUsuario()
 {
     try {
         $JSONData = file_get_contents("php://input");
@@ -30,7 +30,7 @@ class ClientesController{
 
         $id = $dataObject->id;
 
-        $sql = "UPDATE clientes SET ";
+        $sql = "UPDATE usuarios SET ";
         $values = [];
         
         if (property_exists($dataObject, 'nombre')) {

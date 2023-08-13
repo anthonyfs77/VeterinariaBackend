@@ -89,7 +89,7 @@ Router::get('/bajaProductos', [MostrarProductosController::class, 'mostrarProduc
 Router::post('/precios', [MostrarProductosController::class, 'rangoPrecios']);
 
 // para actualizar un cliente
-Router::post('/clientes/actualizar', [ClientesController::class, 'actualizarCliente']);
+Router::post('/clientes/actualizar', [ClientesController::class, 'actualizarUsuario']);
 
 // Para buscar cliente x correo
 Router::post('/clientes/infoCorreo', [ClientesController::class, 'buscarPorCorreo']);
