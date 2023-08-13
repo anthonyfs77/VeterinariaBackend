@@ -189,7 +189,7 @@ class MostrarProductosController
 
     function buscarProductoQuery($nombre)
     {
-        $t = table::queryParams("CALL ObtenerProductosPorNombre(:nombre)", ['nombre' => $nombre]);
+        $t = table::queryParams("CALL producto_venta_nombre(:nombre)", ['nombre' => $nombre]);
 
         return $t;
     }
@@ -228,6 +228,40 @@ class MostrarProductosController
        }
 
 
+       function buscarProductoID()
+       {
+           try {
+               $JSONData = file_get_contents("php://input");
+               $dataObject = json_decode($JSONData);
+   
+               $nombre = $dataObject->nombre;
+   
+               $products = $this->buscarProductoIDQuery($nombre);
+   
+               $response = ['data' => $products];
+   
+   
+               header('Content-Type: application/json');
+               echo json_encode($response);
+           } catch (\Exception $e) {
+               $errorResponse = ['message' => "Error en el servidor: " . $e->getMessage()];
+               header('Content-Type: application/json');
+               echo json_encode($errorResponse);
+               http_response_code(500);
+           }
+       }
+   
+       function buscarProductoIDQuery($nombre)
+       {
+           $t = table::queryParams("CALL ObtenerProductosPorNombreID(:nombre)", ['nombre' => $nombre]);
+   
+           return $t;
+       }
+
+
+
+
+
     
 
     //  PRODUCTOS POR NOMBRE INTERNOS
@@ -256,10 +290,13 @@ class MostrarProductosController
 
     function buscarProductoInternoQuery($nombre)
     {
-        $t = table::queryParams("CALL ObtenerProductosPorNombre(:nombre)", ['nombre' => $nombre]);
+        $t = table::queryParams("CALL producto_interno_nombre(:nombre)", ['nombre' => $nombre]);
 
         return $t;
     }
+
+
+
 
 
     function TablaProductos () {
@@ -321,6 +358,27 @@ class MostrarProductosController
             http_response_code(500);
         }
     }
+
+    function montoTotal(){
+        try {
+           
+            $t = Table::query("SELECT * FROM PorcentajeCrecimientoMonto");
+
+            $r = new Success($t);
+            $json_response = json_encode($r);
+    
+            header('Content-Type: application/json');
+            echo $json_response;
+        
+        } catch (\Exception $e) {
+            $errorResponse = ['message' => "Error en el servidor: " . $e->getMessage()];
+            header('Content-Type: application/json');
+            echo json_encode($errorResponse);
+            http_response_code(500);
+        }
+    }
+
+
 
     function cantidad_citas(){
         try {
