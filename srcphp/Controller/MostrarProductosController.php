@@ -311,6 +311,34 @@ class MostrarProductosController
         }
     }
 
+    function productoporcadena() {
+        $JSONData = file_get_contents("php://input");
+        $dataObject = json_decode($JSONData);
+    
+        if(isset($dataObject->cadena)) {
+            $resultados = Table::queryParams("CALL BuscarPorNombreEnViewProductos(:cadena)", ['cadena' => $dataObject->cadena]);
+        } else {
+            throw new \Exception("Debe proporcionar un nombre para buscar.");
+        }
+    
+        $r = new Success($resultados);
+        return $r->Send();
+    }
+
+    function productopublicoporcadena() {
+        $JSONData = file_get_contents("php://input");
+        $dataObject = json_decode($JSONData);
+    
+        if(isset($dataObject->cadena)) {
+            $resultados = Table::queryParams("CALL BuscarPorNombreEnProductosVenta(:cadena)", ['cadena' => $dataObject->cadena]);
+        } else {
+            throw new \Exception("Debe proporcionar un nombre para buscar.");
+        }
+    
+        $r = new Success($resultados);
+        return $r->Send();
+    }
+
     
     function cantidad_ventas(){
         try {

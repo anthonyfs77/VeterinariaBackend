@@ -14,36 +14,36 @@
         public static function generateToken($data, $time = 3600): string
         {
             $t = Carbon::now()->timestamp + $time;
-            $key = 'osnola4321';
+            $key = 'orimar174';
             $payload = ['exp' => $t, 'data' => $data];
             return JWT::encode($payload, $key, 'HS256');
         }
 
-
-
-
         /**
          * @return mixed
          */
-        public function getUser()
+        public static function getUser()
         {
-            $session = new Session();
-            $this->user= $session->get('user');
-            return $this->user;
+            $secretKey = 'orimar174';
+            $jwt = Router::getBearerToken();
+            $token = JWT::decode($jwt, new key($secretKey, 'HS256'));
+            return User::find($token->data[0]);
         }
+
         /**
          * @param mixed $user
          */
-        public function setUser($user): void
+        public static function setUser($Usuarios): void
         {
             $session = new Session();
-            $session->set('user', $user);
-            $this->user = $user;
+            $session->set('Usuarios', $Usuarios);
+
         }
-        public function clearUser(): void
+
+        public function clearUser($Usuarios): void
         {
-            $se=new Session();
-            $se->remove("user");
+            $se = new Session();
+            $se->remove("Usuarios");
         }
     
         
