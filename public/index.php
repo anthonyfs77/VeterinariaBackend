@@ -112,6 +112,8 @@ Router::post('/orden/Detalles', [Ordenes_comprasController::class, 'agregarDetal
 // Crear un nuevo servicio
 Router::post('/crear-servicio', [TiposServiciosController::class, 'crearServicio']);
 
+Router::post('/publicarono', [TiposServiciosController::class, 'publicarono']);
+
 // Mover un servicio a borrador
 Router::post('/mover-servicio-a-borrador', [TiposServiciosController::class, 'moverServicioABorrador']);
 
