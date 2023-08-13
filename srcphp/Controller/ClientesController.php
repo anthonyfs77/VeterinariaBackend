@@ -13,7 +13,7 @@ class ClientesController{
     private $conexion;
 
     public function __construct() {
-        $this->conexion = new Conexion('BD', 'localhost', 'root', '');
+        $this->conexion = new Conexion("consultasveterinaria", "172.31.21.148", "administradora", "2023-qwerty");
     }
 
     // Método para actualizar un cliente
