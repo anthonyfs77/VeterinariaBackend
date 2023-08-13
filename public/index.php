@@ -60,10 +60,13 @@ Router::post('/TablaProveedor',[ProveedorController::class, 'TablaProveedor']);
 
 Router::post('/registrarMascota', [MascotasController::class, 'registrarMascota']);
 
+// verificacion de correo 
+Router::post('/verificarCorreoR', [RegistroController::class, 'verificarCorreo']);
+
 // Ruta de registro de clientes [Pantalla Registro]
 Router::post('/registro', [RegistroController::class, 'registrar']);
 
-Router::post('/registro', [EmpleadosController::class, 'registrar']);
+// Router::post('/registro', [EmpleadosController::class, 'registrar']);
 
 // Consulta para mostrar todos los registros
 Router::get('/mostrarR', [RegistroController::class, 'mostrarR']);
@@ -144,11 +147,11 @@ Router::post('/data', [VentasController::class, 'fecha']);
 
 // busqueda de productos
 Router::post('/buscar', [MostrarProductosController::class, 'buscarProducto']);
+Router::post('/buscarInterno', [MostrarProductosController::class, 'buscarProductoInterno']);
 
 Router::post('/buscarlimit', [MostrarProductosController::class, 'buscarProductolimite']);
 
-// busqueda de productos internos
-Router::post('/buscarInterno', [MostrarProductosController::class, 'buscarProductoInterno']);
+Router::post('/buscarID', [MostrarProductosController::class, 'buscarProductoID']);
 
 // Realizar compra 
 Router::post('/orden/compra', [Ordenes_comprasController::class, 'CrearOrdenCompra']);
@@ -210,18 +213,23 @@ Router::post('/TServicios',[GenerarConsultasController::class, 'TServicios']);
 
 Router::get('/total_citas', [MostrarProductosController::class, 'cantidad_citas']);
 Router::get('/total_ventas', [MostrarProductosController::class, 'cantidad_ventas']);
+Router::get('/monto_total', [MostrarProductosController::class, 'montoTotal']);
 
 Router::get('/citas_total', [citasController::class, 'citasTot']);
 Router::get('/citas_aceptadas', [citasController::class, 'citasAceptadas']);
 
+
 Router::post('/citas_id', [citasController::class, 'cita_id']);
 Router::post('/citasResponse', [citasController::class, 'rechazar_aceptar_cita']);
 
+Router::post('/citasAceptadasResponse', [citasController::class, 'rechazar_completar_cita']);
+
+Router::get('/verificacion', [LoginController::class, 'verificacion']);
 
 
+Router::post('/venta', [VentasController::class, 'venta']);
 
-
-
+Router::get('/GenerarTiket', [VentasController::class, 'tiket']);
 
 
 
