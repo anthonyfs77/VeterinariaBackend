@@ -20,7 +20,7 @@ class Table
     static function insertFromJson($query, $json)
     {
         try {
-            $cc = new Conexion("consultasveterinaria", "172.31.21.148", "administradora", "2023-qwerty");
+            $cc = new Conexion("consultasveterinaria", "172.31.21.148", "root", "");
             self::$pdo = $cc->getPDO();
     
             $stmt = self::$pdo->prepare($query);
@@ -37,7 +37,7 @@ class Table
 
     static function query($query)
     {
-        $cc = new  Conexion("consultasveterinaria", "172.31.21.148", "administradora", "2023-qwerty");
+        $cc = new  Conexion("consultasveterinaria", "172.31.21.148", "root", "");
         self::$pdo = $cc->getPDO();
         $stmt = self::$pdo->query($query);
         $resultados = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -46,7 +46,7 @@ class Table
 
     static function queryParams($query, $params = [])
     {
-        $cc = new Conexion("consultasveterinaria", "172.31.21.148", "administradora", "2023-qwerty");
+        $cc = new Conexion("consultasveterinaria", "172.31.21.148", "root", "");
         self::$pdo = $cc->getPDO();
 
         $stmt = self::$pdo->prepare($query);
